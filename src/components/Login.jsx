@@ -8,6 +8,7 @@ import { addUser } from "../utils/userSlice";
 function Login() {
   const [email, setEmail] = useState("divasverma18@gmail.com");
   const [password, setPassword] = useState("Divas@123");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,37 +25,54 @@ function Login() {
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (err) {
+      setError(err?.response?.data || "Something went wrong!");
       console.error(err);
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    handleLogin();
+  };
+
   return (
     <>
-      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 mx-auto">
+      <form
+        className="fieldset mt-20 bg-base-200 border-base-300 rounded-box w-xs border p-4 mx-auto"
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <legend className="fieldset-legend text-2xl text-center">Login</legend>
 
-        <label className="label">Email</label>
+        <label className="label mt-3">Email</label>
         <input
           type="email"
+          required
           className="input"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <label className="label">Password</label>
+        <label className="label mt-3">Password</label>
         <input
           type="password"
+          required
           className="input"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="btn btn-neutral mt-4" onClick={handleLogin}>
+        <p className={`text-red-500 h-4`}>{error || " "}</p>
+
+        <button
+          className="btn btn-neutral my-3 disabled:opacity-70"
+          type="submit"
+        >
           Login
         </button>
-      </fieldset>
+      </form>
     </>
   );
 }
