@@ -20,7 +20,7 @@ function NavBar() {
   };
 
   return (
-    <div className="navbar bg-base-200 shadow-sm">
+    <div className="navbar bg-base-200 shadow-sm sticky top-0 z-1000">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
           DevTinder
