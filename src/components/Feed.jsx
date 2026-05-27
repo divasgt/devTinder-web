@@ -7,7 +7,6 @@ import UserCard from "./userCard";
 
 function Feed() {
   const feed = useSelector((store) => store.feed);
-  console.log(feed);
   const dispatch = useDispatch();
 
   const getFeed = async () => {
@@ -27,7 +26,9 @@ function Feed() {
     getFeed();
   }, []);
 
-  return <div>{feed && <UserCard user={feed[3]} />}</div>;
+  return (
+    <div>{feed && <UserCard user={feed[3]} className="mt-10 mx-auto" />}</div>
+  );
 }
 
 export default Feed;

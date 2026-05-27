@@ -1,8 +1,8 @@
-function UserCard({ user }) {
+function UserCard({ user, className = "" }) {
   const { firstName, lastName, about, gender, age, skills, photoUrl } = user;
 
   return (
-    <div className="card bg-base-200 w-96 shadow-sm mx-auto mt-10">
+    <div className={"card bg-base-200 shadow-sm w-96" + className}>
       <figure className="px-10 pt-10">
         <img src={photoUrl} alt="user photo" className="rounded-lg" />
       </figure>
@@ -11,9 +11,7 @@ function UserCard({ user }) {
 
         <div className="flex flex-col gap-1 *:font-medium">
           <div>
-            {age && (
-              <span>{age.charAt(0).toUpperCase() + age.slice(1) + ", "}</span>
-            )}
+            {age && <span>{age + ", "}</span>}
             {gender && (
               <span>
                 {gender.charAt(0).toUpperCase() + gender.slice(1) + ", "}
