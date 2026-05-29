@@ -49,12 +49,18 @@ function NavBar() {
               <li>
                 <Link to="/profile" className="justify-between">
                   Profile
-                  <span className="badge">New</span>
+                  {/* <span className="badge">New</span> */}
                 </Link>
               </li>
+
               <li>
-                <a>Settings</a>
+                <Link to="/requests">Requests</Link>
               </li>
+
+              <li>
+                <Link to="/connections">Connections</Link>
+              </li>
+
               <li>
                 <div onClick={handleLogout}>Logout</div>
               </li>
