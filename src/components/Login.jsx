@@ -9,6 +9,9 @@ function Login() {
   const [email, setEmail] = useState("divasverma18@gmail.com");
   const [password, setPassword] = useState("Divas@123");
   const [error, setError] = useState("");
+  const [isSignUpForm, setIsSignUpForm] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,7 +20,7 @@ function Login() {
       const res = await axios.post(
         `${BASE_URL}/login`,
         {
-          email: email,
+          email,
           password,
         },
         { withCredentials: true }, // If we don't write this, browser will not store cookies and will not send the cookie (for auth) with other API requests.
@@ -30,26 +33,72 @@ function Login() {
     }
   };
 
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/signup`,
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
+        { withCredentials: true },
+      );
+      dispatch(addUser(res.data));
+      return navigate("/profile");
+    } catch (err) {
+      setError(err?.response?.data || "Something went wrong!");
+      console.error(err);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    handleLogin();
+    isSignUpForm ? handleSignUp() : handleLogin();
   };
 
   return (
     <>
       <form
-        className="fieldset mt-20 bg-base-200 border-base-300 rounded-box w-xs border p-4 mx-auto"
+        className="fieldset mt-20 bg-base-200 border-base-300 rounded-box w-xs border p-4 pb-5 mx-auto"
         onSubmit={(e) => handleSubmit(e)}
       >
-        <legend className="fieldset-legend text-2xl text-center">Login</legend>
+        <legend className="fieldset-legend text-2xl text-center mx-auto py-3 mb-2">
+          {isSignUpForm ? "Sign Up" : "Log In"}
+        </legend>
+
+        {isSignUpForm && (
+          <>
+            <label className="label mt-3">First Name</label>
+            <input
+              type="text"
+              required
+              className="input"
+              placeholder="John"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+
+            <label className="label mt-3">Last Name</label>
+            <input
+              type="text"
+              required
+              className="input"
+              placeholder="Doe"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </>
+        )}
 
         <label className="label mt-3">Email</label>
         <input
           type="email"
           required
           className="input"
-          placeholder="Email"
+          placeholder="johndoe@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -70,8 +119,17 @@ function Login() {
           className="btn btn-neutral my-3 disabled:opacity-70"
           type="submit"
         >
-          Login
+          {isSignUpForm ? "Sign Up" : "Log In"}
         </button>
+
+        <div
+          className="text-blue-500 cursor-pointer hover:opacity-80 font-medium"
+          onClick={() => setIsSignUpForm((prev) => !prev)}
+        >
+          {isSignUpForm
+            ? "Already have an account? Log In"
+            : "New to DevTinder? Sign up"}
+        </div>
       </form>
     </>
   );
