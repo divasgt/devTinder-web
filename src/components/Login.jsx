@@ -6,8 +6,8 @@ import { useNavigate } from "react-router";
 import { addUser } from "../utils/userSlice";
 
 function Login() {
-  const [email, setEmail] = useState("divasverma18@gmail.com");
-  const [password, setPassword] = useState("Divas@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSignUpForm, setIsSignUpForm] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -45,7 +45,7 @@ function Login() {
         },
         { withCredentials: true },
       );
-      dispatch(addUser(res.data));
+      dispatch(addUser(res.data.data));
       return navigate("/profile");
     } catch (err) {
       setError(err?.response?.data || "Something went wrong!");
