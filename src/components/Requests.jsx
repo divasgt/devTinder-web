@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../utils/requestsSlice";
+import { addRequests, removeRequest } from "../utils/requestsSlice";
 
 function Requests() {
   const requests = useSelector((store) => store.requests);
@@ -27,6 +27,19 @@ function Requests() {
 
     getRequests();
   }, [dispatch]);
+
+  const reviewRequest = async (status, requestId) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/request/review/${status}/${requestId}`,
+        {},
+        { withCredentials: true },
+      );
+      dispatch(removeRequest(requestId));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   return (
     <>
@@ -62,6 +75,21 @@ function Requests() {
                     {user.firstName + " " + user.lastName}
                   </p>
                   <p className="">{user.about}</p>
+                </div>
+
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => reviewRequest("rejected", r._id)}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => reviewRequest("accepted", r._id)}
+                  >
+                    Accept
+                  </button>
                 </div>
               </div>
             );
