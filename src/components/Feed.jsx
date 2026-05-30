@@ -27,7 +27,7 @@ function Feed() {
   }, []);
 
   return (
-    <div>{feed && <UserCard user={feed[3]} className="mt-10 mx-auto" />}</div>
+    <div>{feed && <UserCard user={feed[0]} className="mt-10 mx-auto" />}</div>
   );
 }
 
