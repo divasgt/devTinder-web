@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
-import UserCard from "./userCard";
+import UserCard from "./UserCard";
 
 function EditProfile({ user }) {
   // const { firstName, lastName, photoUrl, age, gender, about, skills } = user;
