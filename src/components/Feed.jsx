@@ -1,9 +1,10 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { addFeed } from "../utils/feedSlice";
-import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
+import { EmptyState, ErrorState, Spinner } from "./States";
 
 function Feed() {
   const feed = useSelector((store) => store.feed);
@@ -13,13 +14,11 @@ function Feed() {
 
   useEffect(() => {
     const getFeed = async () => {
-      if (feed) return;
-
       try {
         const res = await axios.get(`${BASE_URL}/feed`, {
           withCredentials: true,
         });
-        dispatch(addFeed(res?.data?.data));
+        dispatch(addFeed(res?.data?.data || []));
       } catch (err) {
         console.error(err.message);
         setError(true);
@@ -29,18 +28,41 @@ function Feed() {
     };
 
     getFeed();
-  }, []);
+  }, [dispatch]);
+
+  const retry = () => {
+    setError(false);
+    setLoading(true);
+    (async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/feed`, {
+          withCredentials: true,
+        });
+        dispatch(addFeed(res?.data?.data || []));
+      } catch (err) {
+        console.error(err.message);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  };
 
   return (
-    <div>
+    <div className="px-4">
       {loading ? (
-        <p className="mt-10 text-md text-center">Loading feed...</p>
+        <div className="flex justify-center mt-20">
+          <Spinner />
+        </div>
       ) : error ? (
-        <p className="mt-10 text-md text-center">Something went wrong</p>
-      ) : feed.length === 0 ? (
-        <p className="mt-10 text-md text-center">No new users found</p>
+        <ErrorState onRetry={retry} />
+      ) : !feed || feed.length === 0 ? (
+        <EmptyState
+          title="No new developers right now"
+          body="Check back soon — new devs join all the time."
+        />
       ) : (
-        <UserCard user={feed[0]} className="mt-10 mx-auto" />
+        <UserCard user={feed[0]} />
       )}
     </div>
   );

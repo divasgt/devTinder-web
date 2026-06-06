@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import Body from "./components/Body";
 import Profile from "./components/Profile";
+import EditProfile from "./components/EditProfile";
 import Login from "./components/Login";
 import Feed from "./components/Feed";
 import { Provider } from "react-redux";
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Feed />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/connections" element={<Connections />} />
             <Route path="/requests" element={<Requests />} />
           </Route>

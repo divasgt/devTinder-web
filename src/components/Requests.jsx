@@ -1,14 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
+import { BASE_URL } from "../utils/constants";
 import { addRequests, removeRequest } from "../utils/requestsSlice";
+import Avatar from "./Avatar";
+import { EmptyState, ErrorState, SkeletonList } from "./States";
 
 function Requests() {
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [busyId, setBusyId] = useState(null);
 
   useEffect(() => {
     const getRequests = async () => {
@@ -29,8 +32,9 @@ function Requests() {
   }, [dispatch]);
 
   const reviewRequest = async (status, requestId) => {
+    setBusyId(requestId);
     try {
-      const res = await axios.post(
+      await axios.post(
         `${BASE_URL}/request/review/${status}/${requestId}`,
         {},
         { withCredentials: true },
@@ -38,65 +42,96 @@ function Requests() {
       dispatch(removeRequest(requestId));
     } catch (err) {
       console.error(err.message);
+    } finally {
+      setBusyId(null);
     }
   };
 
+  const retry = () => {
+    setError(false);
+    setLoading(true);
+    (async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/user/request/recieved`, {
+          withCredentials: true,
+        });
+        dispatch(addRequests(res?.data?.data || []));
+      } catch (err) {
+        console.error(err.message);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  };
+
   return (
-    <>
-      <h1 className="mt-5 mb-4 text-2xl font-bold text-center">
-        Connection Requests
-      </h1>
+    <div className="max-w-150 mx-auto mt-10 px-4">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold text-fg tracking-tight flex items-center gap-2">
+          Connection Requests
+          {!loading && !error && requests.length > 0 && (
+            <span className="text-sm font-medium text-fg-muted bg-surface-2 px-2 py-0.5 rounded">
+              {requests.length}
+            </span>
+          )}
+        </h1>
+        <p className="text-sm text-fg-muted mt-1">
+          People who want to connect with you.
+        </p>
+      </header>
 
       {loading ? (
-        <p className="mt-10 text-md text-center">Loading requests...</p>
+        <SkeletonList count={3} />
       ) : error ? (
-        <p className="mt-10 text-md text-center">Something went wrong</p>
+        <ErrorState onRetry={retry} />
       ) : requests.length === 0 ? (
-        <p className="mt-10 text-md text-center">No pending requests</p>
+        <EmptyState
+          title="No pending requests"
+          body="When someone wants to connect, it'll show up here."
+        />
       ) : (
-        <div className="flex flex-col gap-4 items-center">
+        <ul className="space-y-3">
           {requests.map((r) => {
             const user = r.fromUserId;
-
+            const busy = busyId === r._id;
             return (
-              <div
-                key={user._id}
-                className="py-4 px-6 sm:w-1/2 bg-base-300 rounded-xl border border-base-200 flex gap-8"
-              >
-                <div>
-                  <img
-                    className="size-18 rounded-full"
-                    src={user.photoUrl}
-                    alt="user photo"
-                  />
-                </div>
-                <div>
-                  <p className="text-lg font-medium">
-                    {user.firstName + " " + user.lastName}
+              <li key={r._id} className="card flex items-center gap-4">
+                <Avatar user={user} className="size-12" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-semibold text-fg truncate">
+                    {user.firstName} {user.lastName}
                   </p>
-                  <p className="">{user.about}</p>
+                  {user.about && (
+                    <p className="text-sm text-fg-muted truncate">
+                      {user.about}
+                    </p>
+                  )}
                 </div>
-
-                <div>
+                <div className="flex gap-2 flex-shrink-0">
                   <button
-                    className="btn btn-primary"
+                    type="button"
+                    className="btn-ghost"
+                    disabled={busy}
                     onClick={() => reviewRequest("rejected", r._id)}
                   >
                     Reject
                   </button>
                   <button
-                    className="btn btn-secondary"
+                    type="button"
+                    className="btn-accent"
+                    disabled={busy}
                     onClick={() => reviewRequest("accepted", r._id)}
                   >
                     Accept
                   </button>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
-    </>
+    </div>
   );
 }
 

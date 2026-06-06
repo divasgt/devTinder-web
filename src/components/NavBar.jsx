@@ -1,74 +1,186 @@
 import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import { removeUser } from "../utils/userSlice";
+import Avatar from "./Avatar";
+import ThemeToggle from "./ThemeToggle";
 
-function NavBar() {
+function Brand() {
+  return (
+    <Link
+      to="/"
+      className="flex items-center gap-0 font-extrabold text-base text-fg tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded"
+    >
+      <span>dev</span>
+      <span className="text-primary px-0.5">·</span>
+      <span>tinder</span>
+    </Link>
+  );
+}
+
+function PillNav() {
+  const connectionsCount = useSelector((s) => s.connections?.length ?? 0);
+  const requestsCount = useSelector((s) => s.requests?.length ?? 0);
+
+  const items = [
+    { to: "/", label: "Feed", end: true },
+    { to: "/connections", label: "Connections", count: connectionsCount },
+    { to: "/requests", label: "Requests", count: requestsCount },
+  ];
+
+  return (
+    <nav
+      aria-label="Primary"
+      className="inline-flex p-1 bg-surface-2 border border-border rounded"
+    >
+      {items.map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.end}
+          className={({ isActive }) =>
+            `inline-flex items-center gap-1.5 px-3 h-8 text-sm font-medium rounded transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
+              isActive
+                ? "bg-primary text-white"
+                : "text-fg-muted hover:text-fg"
+            }`
+          }
+        >
+          <span>{item.label}</span>
+          {item.count > 0 && (
+            <span
+              className={`inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 text-[10px] font-bold rounded-full ${
+                // when the parent is active, the badge needs a contrasting style
+                "bg-accent text-white"
+              }`}
+              aria-label={`${item.count} pending`}
+            >
+              {item.count}
+            </span>
+          )}
+        </NavLink>
+      ))}
+    </nav>
+  );
+}
+
+function UserMenu() {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  if (!user) return null;
 
   const handleLogout = async () => {
+    setOpen(false);
     try {
       await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
-      dispatch(removeUser());
-      navigate("/login");
     } catch (err) {
       console.error(err.message);
     }
+    dispatch(removeUser());
+    navigate("/login");
   };
 
+  const close = () => setOpen(false);
+
   return (
-    <div className="navbar bg-base-200 shadow-sm sticky top-0 z-1000">
-      <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">
-          DevTinder
-        </Link>
-      </div>
-      <div className="flex gap-2">
-        {user && (
-          <div className="dropdown dropdown-end mr-5">
-            <div className="flex justify-center items-center gap-3">
-              <div>Welcome, {user.firstName}</div>
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
-                <div className="w-10 rounded-full">
-                  <img alt="User photo" src={user?.photoUrl || null} />
-                </div>
-              </div>
-            </div>
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="Open user menu"
+        className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded"
+      >
+        <span className="hidden sm:block text-sm text-fg-muted">
+          {user.firstName}
+        </span>
+        <Avatar
+          user={user}
+          className="size-8 hover:ring-2 hover:ring-primary/40 transition-shadow"
+        />
+      </button>
 
-            <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-200 rounded-box z-1 mt-3 w-52 p-2 shadow"
-            >
-              <li>
-                <Link to="/profile" className="justify-between">
-                  Profile
-                  {/* <span className="badge">New</span> */}
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/requests">Requests</Link>
-              </li>
-
-              <li>
-                <Link to="/connections">Connections</Link>
-              </li>
-
-              <li>
-                <div onClick={handleLogout}>Logout</div>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 top-full mt-2 w-52 card p-1 z-50 animate-fade-in"
+        >
+          <Link
+            to="/profile"
+            role="menuitem"
+            onClick={close}
+            className="block px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150"
+          >
+            Profile
+          </Link>
+          <Link
+            to="/requests"
+            role="menuitem"
+            onClick={close}
+            className="block px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150"
+          >
+            Requests
+          </Link>
+          <Link
+            to="/connections"
+            role="menuitem"
+            onClick={close}
+            className="block px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150"
+          >
+            Connections
+          </Link>
+          <div className="my-1 border-t border-border" />
+          <button
+            type="button"
+            role="menuitem"
+            onClick={handleLogout}
+            className="w-full text-left px-3 py-2 text-sm rounded text-rose-500 hover:bg-rose-500/10 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40"
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </div>
+  );
+}
+
+function NavBar() {
+  return (
+    <header className="sticky top-0 z-50 h-14 bg-surface/80 backdrop-blur border-b border-border">
+      <div className="max-w-6xl mx-auto h-full px-4 flex items-center justify-between gap-4">
+        <Brand />
+        <div className="hidden md:block">
+          <PillNav />
+        </div>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <UserMenu />
+        </div>
+      </div>
+    </header>
   );
 }
 

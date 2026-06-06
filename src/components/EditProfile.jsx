@@ -1,153 +1,214 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
-import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import UserCard from "./UserCard";
 
-function EditProfile({ user }) {
-  // const { firstName, lastName, photoUrl, age, gender, about, skills } = user;
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
-  const [age, setAge] = useState(user?.age);
-  const [gender, setGender] = useState(user?.gender);
-  const [about, setAbout] = useState(user?.about);
-  const [skills, setSkills] = useState(user?.skills || []);
-  const [message, setMessage] = useState("");
+function EditProfile() {
+  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "");
+  const [age, setAge] = useState(user?.age ?? "");
+  const [gender, setGender] = useState(user?.gender || "");
+  const [about, setAbout] = useState(user?.about || "");
+  const [skillsRaw, setSkillsRaw] = useState((user?.skills || []).join(", "));
+  const [message, setMessage] = useState("");
+  const [messageKind, setMessageKind] = useState("idle"); // "success" | "error" | "idle"
+  const [busy, setBusy] = useState(false);
+
+  if (!user) {
+    return (
+      <p className="mt-10 text-sm text-center text-fg-muted">
+        Loading profile…
+      </p>
+    );
+  }
+
+  const skills = skillsRaw
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const previewUser = {
+    firstName,
+    lastName,
+    about,
+    age,
+    gender,
+    skills,
+    photoUrl,
+  };
 
   const saveProfile = async () => {
     setMessage("");
+    setMessageKind("idle");
+    setBusy(true);
     try {
       const res = await axios.patch(
         `${BASE_URL}/profile/edit`,
-        {
-          firstName,
-          lastName,
-          photoUrl,
-          age,
-          gender,
-          about,
-          skills,
-        },
+        { firstName, lastName, photoUrl, age, gender, about, skills },
         { withCredentials: true },
       );
-
       dispatch(addUser(res?.data?.data));
       setMessage("Profile saved!");
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
+      setMessageKind("success");
+      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
-      setMessage(err?.response?.data);
+      setMessage(err?.response?.data || "Failed to save profile");
+      setMessageKind("error");
       console.error(err.message);
+    } finally {
+      setBusy(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     saveProfile();
   };
 
   return (
-    <div className="flex gap-10 mt-20 justify-center items-start">
-      <form
-        className="fieldset bg-base-200 border-base-300 rounded-box w-lg *:w-full border p-4"
-        onSubmit={(e) => handleSubmit(e)}
-      >
-        <legend className="fieldset-legend text-2xl text-center">
+    <div className="max-w-5xl mx-auto mt-12 px-4 grid gap-8 lg:grid-cols-2 lg:items-start">
+      <form onSubmit={handleSubmit} className="space-y-3 animate-fade-in">
+        <h1 className="text-2xl font-bold text-fg tracking-tight mb-4">
           Edit Profile
-        </legend>
+        </h1>
 
-        <label className="label mt-3">First Name</label>
-        <input
-          type="text"
-          required
-          className="input"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="label" htmlFor="firstName">
+              First Name
+            </label>
+            <input
+              id="firstName"
+              type="text"
+              required
+              className="input"
+              placeholder="John"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="label" htmlFor="lastName">
+              Last Name
+            </label>
+            <input
+              id="lastName"
+              type="text"
+              required
+              className="input"
+              placeholder="Doe"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
+        </div>
 
-        <label className="label mt-3">Last Name</label>
-        <input
-          type="text"
-          required
-          className="input"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+        <div>
+          <label className="label" htmlFor="photoUrl">
+            Photo URL
+          </label>
+          <input
+            id="photoUrl"
+            type="url"
+            required
+            className="input"
+            placeholder="https://…"
+            value={photoUrl}
+            onChange={(e) => setPhotoUrl(e.target.value)}
+          />
+        </div>
 
-        <label className="label mt-3">Photo Url</label>
-        <input
-          type="url"
-          required
-          className="input"
-          placeholder="Photo Url"
-          value={photoUrl}
-          onChange={(e) => setPhotoUrl(e.target.value)}
-        />
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="label" htmlFor="age">
+              Age
+            </label>
+            <input
+              id="age"
+              type="number"
+              required
+              className="input"
+              placeholder="28"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="label" htmlFor="gender">
+              Gender
+            </label>
+            <input
+              id="gender"
+              type="text"
+              className="input"
+              placeholder="e.g. male, female, non-binary…"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            />
+          </div>
+        </div>
 
-        <label className="label mt-3">Age</label>
-        <input
-          type="number"
-          required
-          className="input"
-          placeholder="Age"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
-        />
+        <div>
+          <label className="label" htmlFor="about">
+            About
+          </label>
+          <textarea
+            id="about"
+            className="input h-auto py-2 min-h-24 resize-y leading-relaxed"
+            placeholder="What are you building? What are you looking for?"
+            value={about}
+            onChange={(e) => setAbout(e.target.value)}
+          />
+        </div>
 
-        <label className="label mt-3">Gender</label>
-        <input
-          type="text"
-          required
-          className="input"
-          placeholder="Gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        />
+        <div>
+          <label className="label" htmlFor="skills">
+            Skills <span className="text-fg-muted font-normal">(comma separated)</span>
+          </label>
+          <input
+            id="skills"
+            type="text"
+            className="input"
+            placeholder="React, Go, Kubernetes, …"
+            value={skillsRaw}
+            onChange={(e) => setSkillsRaw(e.target.value)}
+          />
+          {skills.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {skills.map((s, i) => (
+                <span key={`${s}-${i}`} className="skill">
+                  {s}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
 
-        <label className="label mt-3">About</label>
-        <textarea
-          required
-          className="textarea"
-          placeholder="About"
-          value={about}
-          onChange={(e) => setAbout(e.target.value)}
-        />
-
-        <label className="label mt-3">{"Skills (separate using comma)"}</label>
-        <input
-          type="text"
-          required
-          className="input"
-          placeholder="Skills (separate using comma)"
-          value={skills.join(",")}
-          onChange={(e) => setSkills(e.target.value.split(","))}
-        />
-
-        <p className={`text-red-500`}>{message || " "}</p>
+        <p
+          aria-live="polite"
+          className={`text-sm h-5 ${messageKind === "error" ? "text-rose-500" : messageKind === "success" ? "text-emerald-500" : "text-transparent"}`}
+        >
+          {message || "·"}
+        </p>
 
         <button
-          className="btn btn-neutral my-3 disabled:opacity-70"
           type="submit"
+          disabled={busy}
+          className="btn-primary w-full"
         >
-          Save Profile
+          {busy ? "Saving…" : "Save Profile"}
         </button>
       </form>
 
-      {/* Profile Preview Card */}
-      <div className="flex-col space-y-5">
-        <div className="font-semibold text-2xl w-fit px-6 py-3 bg-base-200 border-base-100 rounded-xl border">
-          Profile Preview
-        </div>
-        <UserCard
-          user={{ firstName, lastName, about, age, gender, skills, photoUrl }}
-        />
+      <div className="lg:sticky lg:top-20 space-y-3">
+        <p className="text-sm text-fg-muted font-medium">Live preview</p>
+        <UserCard user={previewUser} showActions={false} />
       </div>
     </div>
   );
