@@ -5,6 +5,7 @@ import EditProfile from "./components/EditProfile";
 import Login from "./components/Login";
 import Feed from "./components/Feed";
 import Landing from "./components/Landing";
+import NotFound from "./components/NotFound";
 import { Provider, useSelector } from "react-redux";
 import appStore from "./utils/appStore";
 import Connections from "./components/Connections";
@@ -27,6 +28,7 @@ function App() {
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/connections" element={<Connections />} />
             <Route path="/requests" element={<Requests />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
