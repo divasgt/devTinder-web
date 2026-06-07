@@ -6,7 +6,7 @@ import { removeUserFromFeed } from "../utils/feedSlice";
 /*
   User card used in the feed, profile page, and edit profile preview. When 'showActions' is true and the user has an '_id', show Pass and Connect buttons that work.
 */
-function UserCard({ user, showActions = true, className = "" }) {
+function UserCard({ user, showActions = true, className = "", animate = true }) {
   const {
     _id,
     firstName,
@@ -38,7 +38,7 @@ function UserCard({ user, showActions = true, className = "" }) {
 
   return (
     <div
-      className={`card max-w-100 mx-auto p-0 overflow-hidden animate-fade-in ${className}`}
+      className={`card max-w-100 mx-auto p-0 overflow-hidden ${animate ? "animate-fade-in" : ""} ${className}`}
     >
       {/* photo area */}
       <div className="relative h-[220px] w-full overflow-hidden bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-rose-500/30 dark:from-indigo-500/20 dark:via-purple-500/20 dark:to-rose-500/20">
