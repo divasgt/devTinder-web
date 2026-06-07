@@ -4,10 +4,16 @@ import Profile from "./components/Profile";
 import EditProfile from "./components/EditProfile";
 import Login from "./components/Login";
 import Feed from "./components/Feed";
-import { Provider } from "react-redux";
+import Landing from "./components/Landing";
+import { Provider, useSelector } from "react-redux";
 import appStore from "./utils/appStore";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
+
+function Home() {
+  const user = useSelector((s) => s.user);
+  return user ? <Feed /> : <Landing />;
+}
 
 function App() {
   return (
@@ -15,7 +21,7 @@ function App() {
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Body />}>
-            <Route path="/" element={<Feed />} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<EditProfile />} />
