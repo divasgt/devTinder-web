@@ -1,5 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import NavBar from "./NavBar";
+import BottomNav from "./BottomNav";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
@@ -52,9 +53,10 @@ function Body() {
   }
 
   return (
-    <div>
+    <div className="pb-16 md:pb-0">
       <NavBar />
       <Outlet />
+      <BottomNav />
     </div>
   );
 }
