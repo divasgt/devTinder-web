@@ -152,7 +152,6 @@ function UserMenu() {
           >
             Connections
           </Link>
-          <div className="my-1 border-t border-border" />
           <button
             type="button"
             role="menuitem"
@@ -161,6 +160,8 @@ function UserMenu() {
           >
             Logout
           </button>
+          <div className="my-1 border-t border-border" />
+          <ThemeToggle />
         </div>
       )}
     </div>
@@ -176,7 +177,6 @@ function NavBar() {
           <PillNav />
         </div>
         <div className="flex items-center gap-3">
-          <ThemeToggle />
           <UserMenu />
         </div>
       </div>
