@@ -6,7 +6,12 @@ import { removeUserFromFeed } from "../utils/feedSlice";
 /*
   User card used in the feed, profile page, and edit profile preview. When 'showActions' is true and the user has an '_id', show Pass and Connect buttons that work.
 */
-function UserCard({ user, showActions = true, className = "", animate = true }) {
+function UserCard({
+  user,
+  showActions = true,
+  className = "",
+  animate = true,
+}) {
   const {
     _id,
     firstName,
@@ -102,7 +107,7 @@ function UserCard({ user, showActions = true, className = "", animate = true }) 
               className="btn-ghost flex-1"
               onClick={() => handleSendRequest("ignored")}
             >
-              Pass
+              Ignore
             </button>
             <button
               type="button"
