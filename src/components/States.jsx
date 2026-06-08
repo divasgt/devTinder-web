@@ -60,4 +60,42 @@ function SkeletonList({ count = 3 }) {
   );
 }
 
-export { Spinner, EmptyState, ErrorState, SkeletonList };
+/*
+  Card-shaped placeholder that mirrors UserCard's dimensions so the layout
+  doesn't jump when the real card arrives. Uses `bg-surface-2` for the bars
+  (same convention as SkeletonList) and Tailwind's built-in `animate-pulse`.
+*/
+function UserCardSkeleton() {
+  return (
+    <div
+      role="status"
+      aria-label="Loading profiles"
+      className="card max-w-100 mx-auto p-0 overflow-hidden animate-pulse"
+    >
+      {/* photo area */}
+      <div className="h-[220px] w-full bg-surface-2" />
+      {/* info section */}
+      <div className="p-5 space-y-3">
+        <div className="space-y-2">
+          <div className="h-5 w-2/3 bg-surface-2 rounded" />
+          <div className="h-3.5 w-1/4 bg-surface-2 rounded" />
+        </div>
+        <div className="flex gap-1.5">
+          <div className="h-5 w-14 bg-surface-2 rounded-sm" />
+          <div className="h-5 w-16 bg-surface-2 rounded-sm" />
+        </div>
+        <div className="space-y-1.5">
+          <div className="h-3 w-full bg-surface-2 rounded" />
+          <div className="h-3 w-11/12 bg-surface-2 rounded" />
+          <div className="h-3 w-2/3 bg-surface-2 rounded" />
+        </div>
+        <div className="flex gap-2 pt-2">
+          <div className="h-10 flex-1 bg-surface-2 rounded" />
+          <div className="h-10 flex-1 bg-surface-2 rounded" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export { Spinner, EmptyState, ErrorState, SkeletonList, UserCardSkeleton };

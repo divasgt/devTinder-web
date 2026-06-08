@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { addFeed } from "../utils/feedSlice";
 import UserCard from "./UserCard";
-import { EmptyState, ErrorState, Spinner } from "./States";
+import { EmptyState, ErrorState, UserCardSkeleton } from "./States";
 
 function Feed() {
   const feed = useSelector((store) => store.feed);
@@ -51,9 +51,7 @@ function Feed() {
   return (
     <div className="px-4">
       {loading ? (
-        <div className="flex justify-center mt-20">
-          <Spinner />
-        </div>
+        <UserCardSkeleton />
       ) : error ? (
         <ErrorState onRetry={retry} />
       ) : !feed || feed.length === 0 ? (
