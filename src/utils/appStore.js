@@ -3,6 +3,7 @@ import userReducer from "./userSlice";
 import feedReducer from "./feedSlice";
 import connectionsReducer from "./connectionsSlice";
 import requestsReducer from "./requestsSlice";
+import ignoredUsersReducer from "./ignoredUsersSlice";
 
 const appStore = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const appStore = configureStore({
     feed: feedReducer,
     connections: connectionsReducer,
     requests: requestsReducer,
+    ignoredUsers: ignoredUsersReducer,
   },
 });
 

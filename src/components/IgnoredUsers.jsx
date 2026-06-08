@@ -1,25 +1,25 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
-import { addConnections } from "../utils/connectionsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addIgnoredUsers } from "../utils/ignoredUsersSlice";
 import Avatar from "./Avatar";
 import { EmptyState, ErrorState, SkeletonList } from "./States";
 import { Link } from "react-router";
 
-function Connections() {
-  const connections = useSelector((store) => store.connections);
+function IgnoredUsers() {
+  const ignoredUsers = useSelector((store) => store.ignoredUsers);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const getConnections = async () => {
+    const getIgnoredUsers = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/user/connections`, {
+        const res = await axios.get(`${BASE_URL}/user/ignored-users`, {
           withCredentials: true,
         });
-        dispatch(addConnections(res?.data?.data || []));
+        dispatch(addIgnoredUsers(res?.data?.data || []));
       } catch (err) {
         console.error(err.message);
         setError(true);
@@ -28,7 +28,7 @@ function Connections() {
       }
     };
 
-    getConnections();
+    getIgnoredUsers();
   }, [dispatch]);
 
   const retry = () => {
@@ -38,10 +38,10 @@ function Connections() {
     // just re-fetch by toggling loading and letting the next visit re-run the effect.
     (async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/user/connections`, {
+        const res = await axios.get(`${BASE_URL}/user/ignored-users`, {
           withCredentials: true,
         });
-        dispatch(addConnections(res?.data?.data || []));
+        dispatch(addIgnoredUsers(res?.data?.data || []));
       } catch (err) {
         console.error(err.message);
         setError(true);
@@ -53,27 +53,12 @@ function Connections() {
 
   return (
     <div className="max-w-150 mx-auto mt-10 px-4">
-      <header className="mb-6 flex items-end justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-fg tracking-tight flex items-center gap-2">
-            Connections
-            {!loading && !error && connections.length > 0 && (
-              <span className="text-sm font-medium text-fg-muted bg-surface-2 px-2 py-0.5 rounded">
-                {connections.length}
-              </span>
-            )}
-          </h1>
-          <p className="text-sm text-fg-muted mt-1">
-            Developers you're connected with.
-          </p>
-        </div>
-
+      <header className="mb-6">
         <Link
-          to={"/connections/ignored"}
-          className="inline-flex items-center gap-1 text-sm text-fg-muted mt-1 hover:text-fg transition-colors duration-150"
+          to="/connections"
+          className="inline-flex items-center gap-1 text-sm text-fg-muted mb-3 hover:text-fg transition-colors duration-150"
         >
-          Show ignored users{" "}
-          <span className="rotate-90">
+          <span className="rotate-270">
             <svg
               width="16"
               height="16"
@@ -88,23 +73,30 @@ function Connections() {
                 d="M17.5 10.5L12 5l-5.5 5.5M12 6.25v13"
               />
             </svg>
-          </span>
+          </span>{" "}
+          Back to connections
         </Link>
+
+        <h1 className="text-2xl font-bold text-fg tracking-tight flex items-center gap-2">
+          Ignored Users
+          {!loading && !error && ignoredUsers.length > 0 && (
+            <span className="text-sm font-medium text-fg-muted bg-surface-2 px-2 py-0.5 rounded">
+              {ignoredUsers.length}
+            </span>
+          )}
+        </h1>
+        <p className="text-sm text-fg-muted mt-1">Users you have ignored</p>
       </header>
 
       {loading ? (
         <SkeletonList count={3} />
       ) : error ? (
         <ErrorState onRetry={retry} />
-      ) : connections.length === 0 ? (
-        <EmptyState
-          title="No connections yet"
-          body="Browse the feed and send your first Connect request."
-          cta={{ to: "/", label: "Browse developers" }}
-        />
+      ) : ignoredUsers.length === 0 ? (
+        <EmptyState title="No ignored users" body="" />
       ) : (
         <ul className="space-y-3">
-          {connections.map((c) => (
+          {ignoredUsers.map((c) => (
             <li key={c._id} className="card flex items-center gap-4">
               <Avatar user={c} className="size-12" />
               <div className="flex-1 min-w-0">
@@ -123,4 +115,4 @@ function Connections() {
   );
 }
 
-export default Connections;
+export default IgnoredUsers;
