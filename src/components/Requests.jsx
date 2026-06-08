@@ -119,7 +119,7 @@ function Requests() {
                   </button>
                   <button
                     type="button"
-                    className="btn-accent"
+                    className="btn-primary"
                     disabled={busy}
                     onClick={() => reviewRequest("accepted", r._id)}
                   >
