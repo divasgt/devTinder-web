@@ -21,6 +21,7 @@ function Brand() {
 }
 
 function PillNav() {
+  const user = useSelector((store) => store.user);
   const connectionsCount = useSelector((s) => s.connections?.length ?? 0);
   const requestsCount = useSelector((s) => s.requests?.length ?? 0);
 
@@ -29,6 +30,8 @@ function PillNav() {
     { to: "/connections", label: "Connections", count: connectionsCount },
     { to: "/requests", label: "Requests", count: requestsCount },
   ];
+
+  if (!user) return null;
 
   return (
     <nav
@@ -42,9 +45,7 @@ function PillNav() {
           end={item.end}
           className={({ isActive }) =>
             `inline-flex items-center gap-1.5 px-3 h-8 text-sm font-medium rounded transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
-              isActive
-                ? "bg-primary text-white"
-                : "text-fg-muted hover:text-fg"
+              isActive ? "bg-primary text-white" : "text-fg-muted hover:text-fg"
             }`
           }
         >
@@ -173,6 +174,7 @@ function NavBar() {
     <header className="sticky top-0 z-50 h-14 bg-surface/80 backdrop-blur border-b border-border">
       <div className="max-w-6xl mx-auto h-full px-4 flex items-center justify-between gap-4">
         <Brand />
+        {}
         <div className="hidden md:block">
           <PillNav />
         </div>
