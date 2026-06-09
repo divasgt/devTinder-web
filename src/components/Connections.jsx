@@ -70,7 +70,7 @@ function Connections() {
 
         <Link
           to={"/connections/ignored"}
-          className="inline-flex items-center gap-1 text-sm text-fg-muted mt-1 hover:text-fg transition-colors duration-150"
+          className="inline-flex items-center gap-1 text-sm text-fg-muted mt-1 hover:text-fg transition-colors"
         >
           Show ignored users{" "}
           <span className="rotate-90">

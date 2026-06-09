@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addIgnoredUsers } from "../utils/ignoredUsersSlice";
 import Avatar from "./Avatar";
 import { EmptyState, ErrorState, SkeletonList } from "./States";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 function IgnoredUsers() {
   const ignoredUsers = useSelector((store) => store.ignoredUsers);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getIgnoredUsers = async () => {
@@ -54,28 +55,27 @@ function IgnoredUsers() {
   return (
     <div className="max-w-150 mx-auto mt-10 px-4">
       <header className="mb-6">
-        <Link
-          to="/connections"
-          className="inline-flex items-center gap-1 text-sm text-fg-muted mb-3 hover:text-fg transition-colors duration-150"
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-3 inline-flex items-center gap-1 text-sm text-fg-muted hover:text-fg transition-colors cursor-pointer"
         >
-          <span className="rotate-270">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="square"
-                stroke-width="2"
-                d="M17.5 10.5L12 5l-5.5 5.5M12 6.25v13"
-              />
-            </svg>
-          </span>{" "}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            className="rotate-270"
+          >
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="square"
+              stroke-width="2"
+              d="M17.5 10.5L12 5l-5.5 5.5M12 6.25v13"
+            />
+          </svg>{" "}
           Back to connections
-        </Link>
+        </button>
 
         <h1 className="text-2xl font-bold text-fg tracking-tight flex items-center gap-2">
           Ignored Users
