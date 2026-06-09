@@ -11,21 +11,21 @@
    All colors are exposed as Tailwind v4 theme variables so utilities like
    `bg-primary`, `text-fg-muted`, `border-border` work directly. */
 @theme {
-  --color-primary: #6366F1;
-  --color-primary-hover: #4F46E5;
-  --color-accent: #F43F5E;
-  --color-accent-hover: #E11D48;
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-accent: #f43f5e;
+  --color-accent-hover: #e11d48;
 
-  --color-bg: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-surface-2: #F1F5F9;
-  --color-border: #E2E8F0;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f5f9;
+  --color-border: #e2e8f0;
 
-  --color-fg: #0F172A;
-  --color-fg-muted: #64748B;
+  --color-fg: #0f172a;
+  --color-fg-muted: #64748b;
 
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -33,24 +33,24 @@
    explicitly pinned light mode. */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-bg: #0B1020;
+    --color-bg: #0b1020;
     --color-surface: #111827;
-    --color-surface-2: #1F2937;
-    --color-border: #1F2937;
-    --color-fg: #E5E7EB;
-    --color-fg-muted: #94A3B8;
+    --color-surface-2: #1f2937;
+    --color-border: #1f2937;
+    --color-fg: #e5e7eb;
+    --color-fg-muted: #94a3b8;
   }
 }
 
 /* explicit dark override — set by the theme toggle or by the bootstrap
    script when system is dark. */
 .dark {
-  --color-bg: #0B1020;
+  --color-bg: #0b1020;
   --color-surface: #111827;
-  --color-surface-2: #1F2937;
-  --color-border: #1F2937;
-  --color-fg: #E5E7EB;
-  --color-fg-muted: #94A3B8;
+  --color-surface-2: #1f2937;
+  --color-border: #1f2937;
+  --color-fg: #e5e7eb;
+  --color-fg-muted: #94a3b8;
 }
 
 @layer base {
@@ -75,21 +75,21 @@
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center h-10 px-4 bg-primary text-white font-semibold text-sm rounded transition-colors duration-150;
+    @apply inline-flex items-center justify-center h-10 px-4 bg-primary text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer;
     @apply hover:bg-primary-hover;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
     @apply disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-primary;
   }
 
   .btn-accent {
-    @apply inline-flex items-center justify-center h-10 px-4 bg-accent text-white font-semibold text-sm rounded transition-colors duration-150;
+    @apply inline-flex items-center justify-center h-10 px-4 bg-accent text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer;
     @apply hover:bg-accent-hover;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
     @apply disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-accent;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center h-10 px-4 bg-transparent text-fg font-semibold text-sm rounded border border-border transition-colors duration-150;
+    @apply inline-flex items-center justify-center h-10 px-4 bg-transparent text-fg font-semibold text-sm rounded-lg border border-border transition-colors cursor-pointer;
     @apply hover:bg-surface-2;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
     @apply disabled:opacity-60 disabled:cursor-not-allowed;
@@ -104,7 +104,7 @@
   }
 
   .input {
-    @apply w-full h-10 px-3 bg-surface border border-border rounded text-sm text-fg placeholder:text-fg-muted transition-colors duration-150;
+    @apply w-full h-10 px-3 bg-surface border border-border rounded text-sm text-fg placeholder:text-fg-muted transition-colors;
     @apply focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary;
   }
 
