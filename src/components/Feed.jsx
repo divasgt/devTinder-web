@@ -63,12 +63,12 @@ function Feed() {
         // pt-10 reserves room above the active card for the deeper stack
         // cards to peek; the deeper cards are absolutely positioned and
         // pointer-events-none so only the top card is interactive.
-        <div className="relative pt-10">
+        <div className="relative pt-10 mt-4">
           {feed[2] && (
             <div
               key={feed[2]._id}
               aria-hidden="true"
-              className="absolute inset-x-0 -top-8 origin-top scale-[0.92] opacity-30 pointer-events-none z-0"
+              className="absolute inset-x-0 top-3 origin-top scale-[0.92] opacity-30 pointer-events-none z-0"
             >
               <UserCard user={feed[2]} showActions={false} animate={false} />
             </div>
@@ -77,7 +77,7 @@ function Feed() {
             <div
               key={feed[1]._id}
               aria-hidden="true"
-              className="absolute inset-x-0 -top-4 origin-top scale-[0.96] opacity-60 pointer-events-none z-10"
+              className="absolute inset-x-0 top-5 origin-top scale-[0.96] opacity-60 pointer-events-none z-10"
             >
               <UserCard user={feed[1]} showActions={false} animate={false} />
             </div>
