@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import UserProfileSidebar from "./UserProfileSidebar";
 import UserProfileAbout from "./UserProfileAbout";
@@ -8,6 +9,8 @@ import UserProfileAbout from "./UserProfileAbout";
 function UserProfile() {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const currentUser = useSelector((store) => store.user);
+  const isSelf = currentUser && userId === currentUser._id;
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -138,7 +141,7 @@ function UserProfile() {
       </button>
 
       <div className="grid gap-8 lg:grid-cols-[320px_1fr] lg:items-start">
-        <UserProfileSidebar user={user} />
+        <UserProfileSidebar user={user} isSelf={isSelf} />
         <UserProfileAbout user={user} />
       </div>
     </div>
