@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addIgnoredUsers } from "../utils/ignoredUsersSlice";
 import Avatar from "./Avatar";
 import { EmptyState, ErrorState, SkeletonList } from "./States";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function IgnoredUsers() {
   const ignoredUsers = useSelector((store) => store.ignoredUsers);
