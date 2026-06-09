@@ -16,6 +16,16 @@ function EditProfile() {
   const [gender, setGender] = useState(user?.gender || "");
   const [about, setAbout] = useState(user?.about || "");
   const [skillsRaw, setSkillsRaw] = useState((user?.skills || []).join(", "));
+  const [specialization, setSpecialization] = useState(
+    user?.specialization || "",
+  );
+  const [experience, setExperience] = useState(user?.experience ?? "");
+  const [city, setCity] = useState(user?.city || "");
+  const [country, setCountry] = useState(user?.country || "");
+  const [lookingFor, setLookingFor] = useState(user?.lookingFor || "");
+  const [socialLinks, setSocialLinks] = useState(user?.socialLinks || []);
+  const [company, setCompany] = useState(user?.company || "");
+  const [contactEmail, setContactEmail] = useState(user?.contactEmail || "");
   const [message, setMessage] = useState("");
   const [messageKind, setMessageKind] = useState("idle"); // "success" | "error" | "idle"
   const [busy, setBusy] = useState(false);
@@ -41,6 +51,14 @@ function EditProfile() {
     gender,
     skills,
     photoUrl,
+    specialization,
+    experience,
+    city,
+    country,
+    lookingFor,
+    socialLinks,
+    company,
+    contactEmail,
   };
 
   const saveProfile = async () => {
@@ -48,11 +66,27 @@ function EditProfile() {
     setMessageKind("idle");
     setBusy(true);
     try {
-      const res = await axios.patch(
-        `${BASE_URL}/profile/edit`,
-        { firstName, lastName, photoUrl, age, gender, about, skills },
-        { withCredentials: true },
-      );
+      const payload = {
+        firstName,
+        lastName,
+        photoUrl,
+        about,
+        skills,
+        specialization,
+        city,
+        country,
+        lookingFor,
+        socialLinks,
+        company,
+        contactEmail,
+        gender: gender,
+        age: age === "" ? "" : Number(age),
+        experience: experience === "" ? "" : Number(experience),
+      };
+
+      const res = await axios.patch(`${BASE_URL}/profile/edit`, payload, {
+        withCredentials: true,
+      });
       dispatch(addUser(res?.data?.data));
       setMessage("Profile saved!");
       setMessageKind("success");
@@ -64,6 +98,21 @@ function EditProfile() {
     } finally {
       setBusy(false);
     }
+  };
+
+  const addSocialLink = () => {
+    if (socialLinks.length >= 5) return;
+    setSocialLinks([...socialLinks, { title: "", url: "" }]);
+  };
+
+  const updateSocialLink = (index, field, value) => {
+    const updated = [...socialLinks];
+    updated[index] = { ...updated[index], [field]: value };
+    setSocialLinks(updated);
+  };
+
+  const removeSocialLink = (index) => {
+    setSocialLinks(socialLinks.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e) => {
@@ -126,50 +175,114 @@ function EditProfile() {
 
         <div className="grid grid-cols-2 gap-3">
           <div>
+            <label className="label" htmlFor="specialization">
+              Specialization
+            </label>
+            <input
+              id="specialization"
+              type="text"
+              className="input"
+              placeholder="e.g. Full Stack Developer"
+              value={specialization}
+              onChange={(e) => setSpecialization(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="label" htmlFor="experience">
+              Experience (years)
+            </label>
+            <input
+              id="experience"
+              type="number"
+              min={0}
+              max={60}
+              className="input"
+              placeholder="5"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="label" htmlFor="company">
+            Company
+          </label>
+          <input
+            id="company"
+            type="text"
+            className="input"
+            placeholder="e.g. Google, Freelance, Student"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="label" htmlFor="gender">
+              Gender
+            </label>
+            <select
+              id="gender"
+              className="input appearance-none bg-surface"
+              value={gender || ""}
+              onChange={(e) => setGender(e.target.value)}
+            >
+              <option value="">Not selected</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
             <label className="label" htmlFor="age">
               Age
             </label>
             <input
               id="age"
               type="number"
-              required
               className="input"
               placeholder="28"
               value={age}
               onChange={(e) => setAge(e.target.value)}
             />
           </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="label" htmlFor="gender">
-              Gender
+            <label className="label" htmlFor="city">
+              City
             </label>
             <input
-              id="gender"
+              id="city"
               type="text"
               className="input"
-              placeholder="e.g. male, female, non-binary…"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
+              placeholder="Mumbai"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="label" htmlFor="country">
+              Country
+            </label>
+            <input
+              id="country"
+              type="text"
+              className="input"
+              placeholder="India"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
             />
           </div>
         </div>
 
         <div>
-          <label className="label" htmlFor="about">
-            About
-          </label>
-          <textarea
-            id="about"
-            className="input h-auto py-2 min-h-24 resize-y leading-relaxed"
-            placeholder="What are you building? What are you looking for?"
-            value={about}
-            onChange={(e) => setAbout(e.target.value)}
-          />
-        </div>
-
-        <div>
           <label className="label" htmlFor="skills">
-            Skills <span className="text-fg-muted font-normal">(comma separated)</span>
+            Skills{" "}
+            <span className="text-fg-muted font-normal">(comma separated)</span>
           </label>
           <input
             id="skills"
@@ -190,6 +303,104 @@ function EditProfile() {
           )}
         </div>
 
+        <div>
+          <label className="label" htmlFor="about">
+            About
+          </label>
+          <textarea
+            id="about"
+            className="input h-auto py-2 min-h-24 resize-y leading-relaxed"
+            placeholder="What are you building? What are you looking for?"
+            value={about}
+            onChange={(e) => setAbout(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="label" htmlFor="lookingFor">
+            Looking for
+          </label>
+          <textarea
+            id="lookingFor"
+            className="input h-auto py-2 min-h-24 resize-y leading-relaxed"
+            placeholder="What kind of people or opportunities are you looking for?"
+            value={lookingFor}
+            onChange={(e) => setLookingFor(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="label" htmlFor="contactEmail">
+            Contact Email
+          </label>
+          <input
+            id="contactEmail"
+            type="email"
+            className="input"
+            placeholder="your@email.com"
+            value={contactEmail}
+            onChange={(e) => setContactEmail(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="label">Social Links</label>
+          <div className="space-y-2">
+            {socialLinks.map((link, index) => (
+              <div key={index} className="flex gap-2">
+                <input
+                  type="text"
+                  className="input flex-1"
+                  placeholder="Title (e.g. GitHub)"
+                  value={link.title}
+                  onChange={(e) =>
+                    updateSocialLink(index, "title", e.target.value)
+                  }
+                />
+                <input
+                  type="url"
+                  className="input flex-1"
+                  placeholder="https://..."
+                  value={link.url}
+                  onChange={(e) =>
+                    updateSocialLink(index, "url", e.target.value)
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={() => removeSocialLink(index)}
+                  className="px-3 py-1.5 text-sm text-rose-500 hover:text-rose-600 transition-colors"
+                  aria-label="Remove link"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+          {socialLinks.length < 5 && (
+            <button
+              type="button"
+              onClick={addSocialLink}
+              className="mt-2 flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add another link
+            </button>
+          )}
+        </div>
+
         <p
           aria-live="polite"
           className={`text-sm h-5 ${messageKind === "error" ? "text-rose-500" : messageKind === "success" ? "text-emerald-500" : "text-transparent"}`}
@@ -197,18 +408,25 @@ function EditProfile() {
           {message || "·"}
         </p>
 
-        <button
-          type="submit"
-          disabled={busy}
-          className="btn-primary w-full"
-        >
+        <button type="submit" disabled={busy} className="btn-primary w-full">
           {busy ? "Saving…" : "Save Profile"}
         </button>
       </form>
 
-      <div className="lg:sticky lg:top-20 space-y-3">
-        <p className="text-sm text-fg-muted font-medium">Live preview</p>
-        <UserCard user={previewUser} showActions={false} />
+      <div className="lg:sticky lg:top-20">
+        <div className="w-full max-w-sm mx-auto">
+          <h2 className="text-xl font-bold text-fg tracking-tight mb-2">
+            Live Preview
+          </h2>
+          <p className="text-sm text-fg-muted mb-6">
+            How your profile will appear to others in the feed.
+          </p>
+          <UserCard
+            user={previewUser}
+            showActions={false}
+            className="shadow-lg w-full"
+          />
+        </div>
       </div>
     </div>
   );
