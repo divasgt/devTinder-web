@@ -2,6 +2,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { removeUserFromFeed } from "../utils/feedSlice";
+import { Link } from "react-router";
 
 /*
   User card used in the feed, profile page, and edit profile preview. When 'showActions' is true and the user has an '_id', show Pass and Connect buttons that work.
@@ -61,10 +62,13 @@ function UserCard({
             </span>
           </div>
         )}
+        {_id && (
+          <Link to={`/user/${_id}`} className="absolute inset-0 z-10" aria-label={`View ${fullName}'s profile`} />
+        )}
         {/* a subtle bottom-to-top fade */}
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/15 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/15 to-transparent pointer-events-none"
         />
       </div>
 
@@ -72,7 +76,13 @@ function UserCard({
       <div className="p-5 space-y-3">
         <div>
           <h2 className="text-lg font-bold text-fg leading-tight">
-            {fullName}
+            {_id ? (
+              <Link to={`/user/${_id}`} className="hover:underline">
+                {fullName}
+              </Link>
+            ) : (
+              fullName
+            )}
             {age != null && age !== "" && (
               <span className="text-fg-muted font-normal text-base ml-1.5">
                 {age}
