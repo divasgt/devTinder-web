@@ -50,6 +50,7 @@ function PillNav() {
           }
         >
           <span>{item.label}</span>
+          {/* Item badge */}
           {item.count > 0 && (
             <span
               className={`inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 text-[10px] font-bold rounded-full ${
@@ -120,7 +121,7 @@ function UserMenu() {
         </span>
         <Avatar
           user={user}
-          className="size-8 hover:ring-2 hover:ring-primary/40 transition-shadow"
+          className="size-8 rounded hover:ring-2 hover:ring-primary/40 transition-shadow"
         />
       </button>
 

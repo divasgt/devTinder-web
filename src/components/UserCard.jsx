@@ -147,10 +147,7 @@ function UserCard({
           {skills && skills.length > 0 && (
             <div className="flex flex-wrap gap-1.5 pt-1">
               {skills.map((s, i) => (
-                <span
-                  key={`${s}-${i}`}
-                  className="px-2.5 py-0.5 capitalize text-xs font-medium bg-black/40 backdrop-blur-md border border-white/20 rounded-full shadow-sm text-white"
-                >
+                <span key={`${s}-${i}`} className="skill">
                   {s}
                 </span>
               ))}
