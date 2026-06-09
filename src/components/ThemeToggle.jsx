@@ -26,7 +26,7 @@ function ThemeToggle() {
               aria-label={opt.label}
               aria-pressed={active}
               onClick={() => setTheme(opt.value)}
-              className={`w-7 inline-flex items-center justify-center text-xs leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
+              className={`w-7 inline-flex items-center justify-center text-xs leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer ${
                 i > 0 ? "border-l border-border" : ""
               } ${
                 active

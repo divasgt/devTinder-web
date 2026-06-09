@@ -113,7 +113,7 @@ function UserMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Open user menu"
-        className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded"
+        className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded cursor-pointer"
       >
         <span className="hidden sm:block text-sm text-fg-muted">
           {user.firstName}
@@ -130,34 +130,18 @@ function UserMenu() {
           className="absolute right-0 top-full mt-2 w-52 card p-1 z-50 animate-fade-in"
         >
           <Link
-            to="/profile"
+            to={`/user/${user._id}`}
             role="menuitem"
             onClick={close}
             className="block px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150"
           >
             Profile
           </Link>
-          <Link
-            to="/requests"
-            role="menuitem"
-            onClick={close}
-            className="block px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150"
-          >
-            Requests
-          </Link>
-          <Link
-            to="/connections"
-            role="menuitem"
-            onClick={close}
-            className="block px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150"
-          >
-            Connections
-          </Link>
           <button
             type="button"
             role="menuitem"
             onClick={handleLogout}
-            className="w-full text-left px-3 py-2 text-sm rounded text-rose-500 hover:bg-rose-500/10 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40"
+            className="w-full text-left px-3 py-2 text-sm rounded text-rose-500 hover:bg-rose-500/10 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 cursor-pointer"
           >
             Logout
           </button>
