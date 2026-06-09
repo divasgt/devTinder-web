@@ -200,6 +200,7 @@ function EditProfile() {
               placeholder="5"
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
+              onWheel={(e) => e.target.blur()}
             />
           </div>
         </div>
@@ -244,8 +245,11 @@ function EditProfile() {
               type="number"
               className="input"
               placeholder="28"
+              min={18}
+              max={90}
               value={age}
               onChange={(e) => setAge(e.target.value)}
+              onWheel={(e) => e.target.blur()}
             />
           </div>
         </div>
