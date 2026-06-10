@@ -10,7 +10,7 @@ function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150 flex items-center justify-between">
+    <div className="px-3 py-2 text-sm rounded-lg hover:bg-surface-2 transition-colors duration-150 flex items-center justify-between">
       <span>Theme</span>
       <div
         role="group"
@@ -29,9 +29,7 @@ function ThemeToggle() {
               className={`w-7 inline-flex items-center justify-center text-xs leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer ${
                 i > 0 ? "border-l border-border" : ""
               } ${
-                active
-                  ? "bg-primary text-white"
-                  : "text-fg-muted hover:text-fg"
+                active ? "bg-primary text-white" : "text-fg-muted hover:text-fg"
               }`}
             >
               {opt.icon}

@@ -418,18 +418,14 @@ function EditProfile() {
       </form>
 
       <div className="lg:sticky lg:top-20">
-        <div className="w-full max-w-sm mx-auto">
-          <h2 className="text-xl font-bold text-fg tracking-tight mb-2">
+        <div className="w-full max-w-86 mx-auto">
+          <h2 className="text-xl font-bold text-fg tracking-tight mb-1">
             Live Preview
           </h2>
-          <p className="text-sm text-fg-muted mb-6">
+          <p className="text-sm text-fg-muted mb-4">
             How your profile will appear to others in the feed.
           </p>
-          <UserCard
-            user={previewUser}
-            showActions={false}
-            className="shadow-lg w-full"
-          />
+          <UserCard user={previewUser} showActions={false} />
         </div>
       </div>
     </div>

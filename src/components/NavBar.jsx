@@ -128,13 +128,13 @@ function UserMenu() {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-2 w-52 card p-1 z-50 animate-fade-in"
+          className="absolute right-0 top-full mt-2 w-48 card p-1 z-50 animate-fade-in"
         >
           <Link
             to={`/user/${user._id}`}
             role="menuitem"
             onClick={close}
-            className="block px-3 py-2 text-sm rounded hover:bg-surface-2 transition-colors duration-150"
+            className="block px-3 py-2 text-sm rounded-lg hover:bg-surface-2 transition-colors duration-150"
           >
             Profile
           </Link>
@@ -142,7 +142,7 @@ function UserMenu() {
             type="button"
             role="menuitem"
             onClick={handleLogout}
-            className="w-full text-left px-3 py-2 text-sm rounded text-rose-500 hover:bg-rose-500/10 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 cursor-pointer"
+            className="w-full text-left px-3 py-2 text-sm rounded-lg text-rose-500 hover:bg-rose-500/10 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40 cursor-pointer"
           >
             Logout
           </button>

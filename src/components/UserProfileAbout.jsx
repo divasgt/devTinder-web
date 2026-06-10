@@ -1,14 +1,6 @@
 function UserProfileAbout({ user }) {
   const { about, skills = [], lookingFor } = user;
 
-  // const titleCase = (str) => {
-  //   return str
-  //     .toLowerCase()
-  //     .split(" ")
-  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-  //     .join(" ");
-  // };
-
   return (
     <div className="space-y-6">
       {/* About Me */}
@@ -36,8 +28,7 @@ function UserProfileAbout({ user }) {
               {skills.map((s, i) => (
                 <span
                   key={`${s}-${i}`}
-                  className="capitalize text-sm text-fg px-3 py-1.5 rounded-sm bg-surface-2 border border-primary/15"
-                  // className="skill px-2 py-1 text-sm rounded-md bg-surface border border-primary/30"
+                  className="capitalize text-sm text-fg px-3 py-1.5 card"
                 >
                   {s}
                 </span>

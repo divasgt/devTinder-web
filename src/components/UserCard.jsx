@@ -49,7 +49,7 @@ function UserCard({
 
   return (
     <div
-      className={`w-full max-w-100 mx-auto ${animate ? "animate-fade-in" : ""} ${className}`}
+      className={`w-full max-w-86 mx-auto ${animate ? "animate-fade-in" : ""} ${className}`}
     >
       <div className="card relative p-0 overflow-hidden aspect-[3/4] shadow-xl">
         {/* photo area — background */}
@@ -157,7 +157,7 @@ function UserCard({
       </div>
 
       {showActions && _id && (
-        <div className="flex gap-4 mt-5">
+        <div className="flex gap-4 mt-3">
           <button
             type="button"
             className="btn-ghost flex-1 bg-surface hover:bg-surface-2 border border-border py-3 shadow-sm"
