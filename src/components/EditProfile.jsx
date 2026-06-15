@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import UserCard from "./UserCard";
+import { useSearchParams } from "react-router";
 
 function EditProfile() {
+  const [searchParams] = useSearchParams();
+  const isSignupFlow = searchParams.get("flow") === "signup";
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
@@ -124,7 +127,7 @@ function EditProfile() {
     <div className="max-w-5xl mx-auto mt-12 px-4 grid gap-8 lg:grid-cols-2 lg:items-start">
       <form onSubmit={handleSubmit} className="space-y-3 animate-fade-in">
         <h1 className="text-2xl font-bold text-fg tracking-tight mb-4">
-          Edit Profile
+          {isSignupFlow ? "Complete your profile" : "Edit Profile"}
         </h1>
 
         <div className="grid grid-cols-2 gap-3">

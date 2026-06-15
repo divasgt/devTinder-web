@@ -41,7 +41,7 @@ function Login() {
         { withCredentials: true },
       );
       dispatch(addUser(res.data.data));
-      navigate("/profile");
+      navigate("/profile/edit?flow=signup");
     } catch (err) {
       setError(err?.response?.data || "Something went wrong!");
       console.error(err);
