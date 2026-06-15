@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import Body from "./components/Body";
-import Profile from "./components/Profile";
 import EditProfile from "./components/EditProfile";
 import Login from "./components/Login";
 import Feed from "./components/Feed";
@@ -26,7 +25,6 @@ function App() {
           <Route path="/" element={<Body />}>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/user/:userId" element={<UserProfile />} />
             <Route path="/connections" element={<Connections />} />
