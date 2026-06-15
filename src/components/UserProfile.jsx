@@ -11,7 +11,9 @@ function UserProfile() {
   const navigate = useNavigate();
   const currentUser = useSelector((store) => store.user);
   const isSelf = currentUser && userId === currentUser._id;
+
   const [user, setUser] = useState(null);
+  const [connectionData, setConnectionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -24,6 +26,7 @@ function UserProfile() {
           withCredentials: true,
         });
         setUser(res?.data?.data);
+        setConnectionData(res?.data?.connectionData || null);
       } catch (err) {
         setError(err?.response?.data || "Failed to fetch user profile.");
       } finally {
@@ -141,7 +144,12 @@ function UserProfile() {
       </button>
 
       <div className="grid gap-8 lg:grid-cols-[320px_1fr] lg:items-start">
-        <UserProfileSidebar user={user} isSelf={isSelf} />
+        <UserProfileSidebar
+          user={user}
+          isSelf={isSelf}
+          connectionData={connectionData}
+          currentUserId={currentUser?._id}
+        />
         <UserProfileAbout user={user} />
       </div>
     </div>
