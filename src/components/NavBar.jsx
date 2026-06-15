@@ -6,6 +6,7 @@ import { BASE_URL } from "../utils/constants";
 import { removeUser } from "../utils/userSlice";
 import Avatar from "./Avatar";
 import ThemeToggle from "./ThemeToggle";
+import { Icon } from "./Icons";
 
 function Brand() {
   return (
@@ -26,40 +27,45 @@ function PillNav() {
   const requestsCount = useSelector((s) => s.requests?.length ?? 0);
 
   const items = [
-    { to: "/", label: "Feed", end: true },
-    { to: "/connections", label: "Connections", count: connectionsCount },
-    { to: "/requests", label: "Requests", count: requestsCount },
+    { to: "/", label: "Feed", icon: "feed", end: true },
+    {
+      to: "/connections",
+      label: "Connections",
+      icon: "connections",
+      count: connectionsCount,
+    },
+    {
+      to: "/requests",
+      label: "Requests",
+      icon: "inbox",
+      count: requestsCount,
+    },
   ];
 
   if (!user) return null;
 
   return (
-    <nav
-      aria-label="Primary"
-      className="inline-flex p-1 bg-surface-2 border border-border rounded"
-    >
+    <nav aria-label="Primary" className="flex items-center gap-0.5">
       {items.map((item) => (
         <NavLink
           key={item.to}
           to={item.to}
           end={item.end}
           className={({ isActive }) =>
-            `inline-flex items-center gap-1.5 px-3 h-8 text-sm font-medium rounded transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
-              isActive ? "bg-primary text-white" : "text-fg-muted hover:text-fg"
+            `relative inline-flex items-center gap-1.5 px-3.5 h-9 text-sm font-medium rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 ${
+              isActive ? "text-primary" : "text-fg-muted/60 hover:text-fg"
             }`
           }
         >
+          <Icon name={item.icon} size={18} />
           <span>{item.label}</span>
           {/* Item badge */}
           {item.count > 0 && (
             <span
-              className={`inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 text-[10px] font-bold rounded-full ${
-                // when the parent is active, the badge needs a contrasting style
-                "bg-accent text-white"
-              }`}
+              className="inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 text-[10px] font-bold rounded-full bg-accent text-white"
               aria-label={`${item.count} pending`}
             >
-              {item.count}
+              {item.count > 9 ? "9+" : item.count}
             </span>
           )}
         </NavLink>
@@ -85,6 +91,7 @@ function UserMenu() {
     };
     document.addEventListener("mousedown", onClick);
     document.addEventListener("keydown", onKey);
+
     return () => {
       document.removeEventListener("mousedown", onClick);
       document.removeEventListener("keydown", onKey);
@@ -128,7 +135,7 @@ function UserMenu() {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-2 w-48 card p-1 z-50 animate-fade-in"
+          className="absolute right-0 top-full mt-2 w-46 card p-1 z-50 animate-fade-in"
         >
           <Link
             to={`/user/${user._id}`}
@@ -156,7 +163,7 @@ function UserMenu() {
 
 function NavBar() {
   return (
-    <header className="sticky top-0 z-50 h-14 bg-surface/80 backdrop-blur border-b border-border">
+    <header className="sticky top-0 z-50 h-14 bg-surface/60 backdrop-blur-xl relative before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-primary/20 before:to-transparent">
       <div className="max-w-6xl mx-auto h-full px-4 flex items-center justify-between gap-4">
         <Brand />
         {}
