@@ -106,8 +106,11 @@ function Connections() {
         <ul className="space-y-3">
           {connections.map((c) => (
             <li key={c._id} className="card flex items-center gap-4">
-              <Link to={`/user/${c._id}`} className="flex items-center gap-4 flex-1 min-w-0 group">
-                <Avatar user={c} className="size-12 flex-shrink-0" />
+              <Link
+                to={`/user/${c._id}`}
+                className="flex items-center gap-4 flex-1 min-w-0 group"
+              >
+                <Avatar user={c} className="size-12 shrink-0 rounded" />
                 <div className="flex-1 min-w-0">
                   <p className="text-base font-semibold text-fg truncate group-hover:underline">
                     {c.firstName} {c.lastName}

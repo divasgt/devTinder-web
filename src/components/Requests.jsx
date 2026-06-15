@@ -98,8 +98,11 @@ function Requests() {
             const busy = busyId === r._id;
             return (
               <li key={r._id} className="card flex items-center gap-4">
-                <Link to={`/user/${user._id}`} className="flex items-center gap-4 flex-1 min-w-0 group">
-                  <Avatar user={user} className="size-12 flex-shrink-0" />
+                <Link
+                  to={`/user/${user._id}`}
+                  className="flex items-center gap-4 flex-1 min-w-0 group"
+                >
+                  <Avatar user={user} className="size-12 shrink-0 rounded" />
                   <div className="flex-1 min-w-0">
                     <p className="text-base font-semibold text-fg truncate group-hover:underline">
                       {user.firstName} {user.lastName}
@@ -111,7 +114,7 @@ function Requests() {
                     )}
                   </div>
                 </Link>
-                <div className="flex gap-2 flex-shrink-0">
+                <div className="flex gap-2 shrink-0">
                   <button
                     type="button"
                     className="btn-ghost"
