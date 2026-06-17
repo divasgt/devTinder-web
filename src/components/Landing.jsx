@@ -38,7 +38,7 @@ function Hero() {
             style={{ animationDelay: "200ms" }}
           >
             <Link
-              to="/login"
+              to="/login?signup=true"
               className="h-12 px-8 inline-flex items-center justify-center bg-primary text-white font-semibold text-base rounded-lg transition-all hover:bg-primary-hover hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:-translate-y-0.5 w-full sm:w-auto"
             >
               Create Your Profile
@@ -47,7 +47,7 @@ function Hero() {
               to="/login"
               className="h-12 px-8 inline-flex items-center justify-center bg-surface-2 text-fg font-semibold text-base rounded-lg border border-border transition-all hover:bg-surface hover:border-fg-muted w-full sm:w-auto"
             >
-              Sign In
+              Log In
             </Link>
           </div>
         </div>
