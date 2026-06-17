@@ -56,7 +56,7 @@ function Body() {
   return (
     <>
       <div className="pb-16 md:pb-40 min-h-screen">
-        <NavBar />
+        {(user || location.pathname !== "/") && <NavBar />}
         <Outlet />
         <BottomNav />
       </div>
