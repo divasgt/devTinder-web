@@ -40,7 +40,7 @@ function BottomNav() {
       count: requestsCount,
       end: true,
     },
-    { to: "/profile", label: "Profile", icon: "user" },
+    { to: `/user/${user._id}`, label: "Profile", icon: "user" },
   ];
 
   return (
