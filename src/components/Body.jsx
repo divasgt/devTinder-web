@@ -7,6 +7,7 @@ import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import { useEffect, useState } from "react";
 import { Spinner } from "./States";
+import Footer from "./Footer";
 
 function Body() {
   const user = useSelector((store) => store.user);
@@ -53,11 +54,15 @@ function Body() {
   }
 
   return (
-    <div className="pb-16 md:pb-0">
-      <NavBar />
-      <Outlet />
-      <BottomNav />
-    </div>
+    <>
+      <div className="pb-16 md:pb-40 min-h-screen">
+        <NavBar />
+        <Outlet />
+        <BottomNav />
+      </div>
+
+      <Footer />
+    </>
   );
 }
 
