@@ -83,7 +83,7 @@ function Requests() {
       </header>
 
       {loading ? (
-        <SkeletonList count={3} />
+        <SkeletonList count={3} hasActions={true} />
       ) : error ? (
         <ErrorState onRetry={retry} />
       ) : requests.length === 0 ? (

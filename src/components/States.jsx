@@ -17,10 +17,7 @@ function EmptyState({ title, body, cta }) {
       <p className="text-base font-semibold text-fg">{title}</p>
       {body && <p className="text-sm text-fg-muted mt-1">{body}</p>}
       {cta && (
-        <a
-          href={cta.to}
-          className="btn-primary inline-flex mt-4"
-        >
+        <a href={cta.to} className="btn-primary inline-flex mt-4">
           {cta.label}
         </a>
       )}
@@ -41,58 +38,69 @@ function ErrorState({ onRetry, message = "Something went wrong" }) {
   );
 }
 
-function SkeletonList({ count = 3 }) {
+function SkeletonList({ count = 3, hasActions = false }) {
   return (
     <ul className="space-y-3">
       {Array.from({ length: count }).map((_, i) => (
-        <li
-          key={i}
-          className="card flex items-center gap-4 animate-pulse"
-        >
-          <div className="size-12 bg-surface-2" />
-          <div className="flex-1 space-y-2">
+        <li key={i} className="card flex items-center gap-4 animate-pulse">
+          <div className="size-12 bg-surface-2 shrink-0 rounded" />
+          <div className="flex-1 space-y-2 min-w-0">
             <div className="h-3.5 w-1/3 bg-surface-2 rounded" />
             <div className="h-3 w-2/3 bg-surface-2 rounded" />
           </div>
+          {hasActions && (
+            <div className="flex gap-2 shrink-0">
+              <div className="h-10 w-[72px] bg-surface-2 rounded-lg" />
+              <div className="h-10 w-[72px] bg-surface-2 rounded-lg" />
+            </div>
+          )}
         </li>
       ))}
     </ul>
   );
 }
 
-/*
-  Card-shaped placeholder that mirrors UserCard's dimensions so the layout
-  doesn't jump when the real card arrives. Uses `bg-surface-2` for the bars
-  (same convention as SkeletonList) and Tailwind's built-in `animate-pulse`.
-*/
 function UserCardSkeleton() {
   return (
     <div
       role="status"
-      aria-label="Loading profiles"
-      className="card max-w-100 mx-auto p-0 overflow-hidden animate-pulse"
+      aria-label="Loading profile"
+      className="w-full max-w-86 mx-auto animate-pulse"
     >
-      {/* photo area */}
-      <div className="h-[220px] w-full bg-surface-2" />
-      {/* info section */}
-      <div className="p-5 space-y-3">
-        <div className="space-y-2">
-          <div className="h-5 w-2/3 bg-surface-2 rounded" />
-          <div className="h-3.5 w-1/4 bg-surface-2 rounded" />
+      <div className="card relative p-0 overflow-hidden aspect-[3/4] shadow-xl">
+        {/* photo area — background */}
+        <div className="absolute inset-0 bg-surface-2" />
+
+        {/* gradient overlay */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none z-0"
+        />
+
+        {/* info section overlaid at bottom */}
+        <div className="absolute inset-x-0 bottom-0 p-5 pt-12 space-y-3 z-20">
+          {/* Name skeleton */}
+          <div className="h-6 w-2/3 bg-white/20 rounded" />
+
+          {/* Meta info skeleton */}
+          <div className="space-y-2">
+            <div className="h-3.5 w-1/2 bg-white/20 rounded" />
+            <div className="h-3.5 w-1/3 bg-white/20 rounded" />
+          </div>
+
+          {/* Skills skeleton */}
+          <div className="flex gap-1.5 pt-1">
+            <div className="h-5 w-12 bg-white/20 rounded-full" />
+            <div className="h-5 w-16 bg-white/20 rounded-full" />
+            <div className="h-5 w-14 bg-white/20 rounded-full" />
+          </div>
         </div>
-        <div className="flex gap-1.5">
-          <div className="h-5 w-14 bg-surface-2 rounded-sm" />
-          <div className="h-5 w-16 bg-surface-2 rounded-sm" />
-        </div>
-        <div className="space-y-1.5">
-          <div className="h-3 w-full bg-surface-2 rounded" />
-          <div className="h-3 w-11/12 bg-surface-2 rounded" />
-          <div className="h-3 w-2/3 bg-surface-2 rounded" />
-        </div>
-        <div className="flex gap-2 pt-2">
-          <div className="h-10 flex-1 bg-surface-2 rounded" />
-          <div className="h-10 flex-1 bg-surface-2 rounded" />
-        </div>
+      </div>
+
+      {/* Actions skeleton */}
+      <div className="flex gap-4 mt-3">
+        <div className="h-[46px] flex-1 bg-surface-2 rounded-lg" />
+        <div className="h-[46px] flex-1 bg-surface-2 rounded-lg" />
       </div>
     </div>
   );

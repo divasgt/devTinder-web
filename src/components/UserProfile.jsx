@@ -39,19 +39,70 @@ function UserProfile() {
 
   if (loading) {
     return (
-      <div className="max-w-5xl mx-auto mt-10 px-4 animate-pulse">
+      <div className="max-w-5xl mx-auto mt-5 px-4 animate-pulse">
+        {/* Back button placeholder */}
+        <div className="h-5 w-16 bg-surface-2 rounded mb-4" />
+
         <div className="grid gap-8 lg:grid-cols-[320px_1fr] lg:items-start">
-          <div className="card p-6 space-y-5">
-            <div className="w-32 h-32 rounded-full bg-surface-2 mx-auto" />
-            <div className="h-5 bg-surface-2 rounded w-3/4 mx-auto" />
-            <div className="h-4 bg-surface-2 rounded w-1/2 mx-auto" />
-            <div className="h-4 bg-surface-2 rounded w-2/3 mx-auto" />
-            <div className="h-4 bg-surface-2 rounded w-1/2 mx-auto" />
+          {/* Sidebar Skeleton */}
+          <div className="card p-0 overflow-hidden">
+            {/* Square photo skeleton */}
+            <div className="relative h-80 w-full bg-surface-2" />
+
+            {/* Content section */}
+            <div className="p-6 space-y-4">
+              {/* Name skeleton */}
+              <div className="h-6 bg-surface-2 rounded w-2/3" />
+
+              {/* Action buttons skeleton */}
+              <div className="flex gap-2">
+                <div className="h-10 flex-1 bg-surface-2 rounded-lg" />
+                <div className="h-10 flex-1 bg-surface-2 rounded-lg" />
+              </div>
+
+              {/* Metadata rows skeleton */}
+              <div className="space-y-3 pt-2">
+                <div className="h-4 bg-surface-2 rounded w-5/6" />
+                <div className="h-4 bg-surface-2 rounded w-4/5" />
+                <div className="h-4 bg-surface-2 rounded w-3/4" />
+                <div className="h-4 bg-surface-2 rounded w-2/3" />
+              </div>
+            </div>
           </div>
-          <div className="space-y-4">
-            <div className="h-24 bg-surface-2 rounded card" />
-            <div className="h-24 bg-surface-2 rounded card" />
-            <div className="h-24 bg-surface-2 rounded card" />
+
+          {/* About Me / Content columns skeleton */}
+          <div className="space-y-6">
+            {/* About Me Section */}
+            <div>
+              <div className="h-3.5 w-24 bg-surface-2 rounded mb-3" />
+              <div className="card p-5 space-y-2.5">
+                <div className="h-3.5 bg-surface-2 rounded w-full" />
+                <div className="h-3.5 bg-surface-2 rounded w-11/12" />
+                <div className="h-3.5 bg-surface-2 rounded w-3/4" />
+              </div>
+            </div>
+
+            {/* Skills Section */}
+            <div>
+              <div className="h-3.5 w-16 bg-surface-2 rounded mb-3" />
+              <div className="p-2">
+                <div className="flex flex-wrap gap-3">
+                  <div className="h-9 w-20 bg-surface-2 rounded-lg border border-border/50" />
+                  <div className="h-9 w-24 bg-surface-2 rounded-lg border border-border/50" />
+                  <div className="h-9 w-16 bg-surface-2 rounded-lg border border-border/50" />
+                  <div className="h-9 w-28 bg-surface-2 rounded-lg border border-border/50" />
+                </div>
+              </div>
+            </div>
+
+            {/* Looking For Section */}
+            <div>
+              <div className="h-3.5 w-28 bg-surface-2 rounded mb-3" />
+              <div className="card p-5 space-y-2.5">
+                <div className="h-3.5 bg-surface-2 rounded w-full" />
+                <div className="h-3.5 bg-surface-2 rounded w-5/6" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
