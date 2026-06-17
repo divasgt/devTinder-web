@@ -7,6 +7,10 @@ import { removeUser } from "../utils/userSlice";
 import Avatar from "./Avatar";
 import ThemeToggle from "./ThemeToggle";
 import { Icon } from "./Icons";
+import { removeConnections } from "../utils/connectionsSlice";
+import { removeRequests } from "../utils/requestsSlice";
+import { removeIgnoredUsers } from "../utils/ignoredUsersSlice";
+import { clearFeed } from "../utils/feedSlice";
 
 function Brand() {
   return (
@@ -108,7 +112,11 @@ function UserMenu() {
       console.error(err.message);
     }
     dispatch(removeUser());
-    navigate("/login");
+    dispatch(removeConnections());
+    dispatch(removeIgnoredUsers());
+    dispatch(removeRequests());
+    dispatch(clearFeed());
+    navigate("/");
   };
 
   const close = () => setOpen(false);
