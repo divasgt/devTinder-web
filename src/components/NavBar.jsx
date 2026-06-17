@@ -14,9 +14,9 @@ function Brand() {
       to="/"
       className="flex items-center gap-0 font-extrabold text-base text-fg tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded"
     >
-      <span>dev</span>
+      <span>Dev</span>
       <span className="text-primary px-0.5">·</span>
-      <span>tinder</span>
+      <span>Forge</span>
     </Link>
   );
 }
@@ -123,9 +123,7 @@ function UserMenu() {
         aria-label="Open user menu"
         className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded cursor-pointer"
       >
-        <span className="hidden sm:block text-sm text-fg-muted">
-          {user.firstName}
-        </span>
+        <span className="hidden sm:block text-sm text-fg-muted">{user.firstName}</span>
         <Avatar
           user={user}
           className="size-8 rounded hover:ring-2 hover:ring-primary/40 transition-shadow"

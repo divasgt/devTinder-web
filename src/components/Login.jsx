@@ -21,7 +21,7 @@ function Login() {
       const res = await axios.post(
         `${BASE_URL}/login`,
         { email, password },
-        { withCredentials: true },
+        { withCredentials: true }
       );
       dispatch(addUser(res.data));
       navigate("/");
@@ -38,7 +38,7 @@ function Login() {
       const res = await axios.post(
         `${BASE_URL}/signup`,
         { firstName, lastName, email, password },
-        { withCredentials: true },
+        { withCredentials: true }
       );
       dispatch(addUser(res.data.data));
       navigate("/profile/edit?flow=signup");
@@ -65,18 +65,14 @@ function Login() {
 
   return (
     <div className="flex justify-center px-4 pt-16">
-      <form
-        onSubmit={handleSubmit}
-        className="w-90 card p-6 space-y-4 animate-fade-in"
-        noValidate
-      >
+      <form onSubmit={handleSubmit} className="w-90 card p-6 space-y-4 animate-fade-in" noValidate>
         <div>
           <h1 className="text-[22px] font-bold text-fg tracking-tight">
             {isSignUpForm ? "Sign Up" : "Log In"}
           </h1>
           <p className="text-sm text-fg-muted mt-1">
             {isSignUpForm
-              ? "Create your DevTinder profile."
+              ? "Create your DevForge profile."
               : "Welcome back. Sign in to keep connecting."}
           </p>
         </div>
@@ -171,9 +167,7 @@ function Login() {
           onClick={switchMode}
           className="block w-full text-center text-sm text-primary hover:underline cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded"
         >
-          {isSignUpForm
-            ? "Already have an account? Log In"
-            : "New to DevTinder? Sign up"}
+          {isSignUpForm ? "Already have an account? Log In" : "New to DevForge? Sign up"}
         </button>
       </form>
     </div>

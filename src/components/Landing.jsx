@@ -27,9 +27,8 @@ function Hero() {
         <span className="text-primary">dev co-founder</span>
       </h1>
       <p className="mt-5 text-base md:text-lg text-fg-muted max-w-xl mx-auto">
-        DevTinder is a swipe-based network for engineers. Match by tech stack,
-        collaborate on side projects, and meet the person you'd actually want to
-        pair with.
+        DevForge is a swipe-based network for engineers. Match by tech stack, collaborate on side
+        projects, and meet the person you'd actually want to pair with.
       </p>
       <div className="mt-7 flex items-center justify-center gap-3">
         <Link to="/login" className="btn-primary">
@@ -56,9 +55,7 @@ function Features() {
               {String(i + 1).padStart(2, "0")}
             </span>
             <h3 className="text-base font-semibold text-fg">{f.title}</h3>
-            <p className="text-sm text-fg-muted mt-1.5 leading-relaxed">
-              {f.body}
-            </p>
+            <p className="text-sm text-fg-muted mt-1.5 leading-relaxed">{f.body}</p>
           </div>
         ))}
       </div>
