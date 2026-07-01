@@ -10,43 +10,47 @@ function Feed() {
   const feed = useSelector((store) => store.feed);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [noMoreFeed, setNoMoreFeed] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const getFeed = async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/feed`, {
-          withCredentials: true,
-        });
-        dispatch(addFeed(res?.data?.data || []));
-      } catch (err) {
-        console.error(err.message);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const getFeed = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/feed?limit=10`, {
+        withCredentials: true,
+      });
 
+      const newFeed = res?.data?.data || [];
+      if (newFeed.length === 0) {
+        setNoMoreFeed(true);
+        setLoading(false);
+        return;
+      }
+
+      dispatch(addFeed(newFeed));
+    } catch (err) {
+      console.error(err.message);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     getFeed();
   }, [dispatch]);
 
   const retry = () => {
     setError(false);
     setLoading(true);
-    (async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/feed`, {
-          withCredentials: true,
-        });
-        dispatch(addFeed(res?.data?.data || []));
-      } catch (err) {
-        console.error(err.message);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    getFeed();
   };
+
+  useEffect(() => {
+    if (feed && feed.length === 0 && !noMoreFeed) {
+      setLoading(true);
+      getFeed();
+    }
+  }, [feed, noMoreFeed]);
 
   return (
     <div className="px-4">
