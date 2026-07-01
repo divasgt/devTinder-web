@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 function Spinner({ className = "" }) {
   return (
     <div
@@ -17,9 +19,9 @@ function EmptyState({ title, body, cta }) {
       <p className="text-base font-semibold text-fg">{title}</p>
       {body && <p className="text-sm text-fg-muted mt-1">{body}</p>}
       {cta && (
-        <a href={cta.to} className="btn-primary inline-flex mt-4">
+        <Link to={cta.to} className="btn-primary inline-flex mt-4">
           {cta.label}
-        </a>
+        </Link>
       )}
     </div>
   );
