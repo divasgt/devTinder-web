@@ -53,7 +53,7 @@ function Feed() {
   }, [feed, noMoreFeed]);
 
   return (
-    <div className="px-4">
+    <div className="relative px-4 pt-10 mt-4">
       {loading ? (
         <UserCardSkeleton />
       ) : error ? (
@@ -67,7 +67,7 @@ function Feed() {
         // pt-10 reserves room above the active card for the deeper stack
         // cards to peek; the deeper cards are absolutely positioned and
         // pointer-events-none so only the top card is interactive.
-        <div className="relative pt-10 mt-4">
+        <div className="">
           {feed[2] && (
             <div
               key={feed[2]._id}
