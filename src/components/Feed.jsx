@@ -5,17 +5,48 @@ import { BASE_URL } from "../utils/constants";
 import { addFeed } from "../utils/feedSlice";
 import UserCard from "./UserCard";
 import { EmptyState, ErrorState, UserCardSkeleton } from "./States";
+import { useLocation } from "react-router";
+import FeedFilters from "./FeedFilters";
+
+// building feed filters, show ai search bar primary thing, under it from its start width to end width show filters in a line, like linkedin job search filters are shown. show options in dropdown.
 
 function Feed() {
   const feed = useSelector((store) => store.feed);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [noMoreFeed, setNoMoreFeed] = useState(false);
+  const location = useLocation();
+  // const [localFilters, setLocalFilters] = useState({});
+  const [filters, setFilters] = useState({
+    minAge: "",
+    maxAge: "",
+    specialization: "",
+    experience: "",
+    city: "",
+    country: "",
+    skills: "",
+  });
+  // const [filtersApplied, setFiltersApplied] = useState(false);
+
   const dispatch = useDispatch();
 
-  const getFeed = async () => {
+  const getFeed = async (currentFilters = filters) => {
     try {
-      const res = await axios.get(`${BASE_URL}/feed?limit=10`, {
+      // cleaning up empty params before converting to query string
+      const cleanFilters = {};
+      Object.entries(currentFilters).forEach(([key, val]) => {
+        // only keep params which have actual values
+        if (val !== "" && val !== null && val !== undefined) {
+          cleanFilters[key] = val;
+        }
+      });
+
+      let queries = "";
+      if (Object.keys(cleanFilters).length > 0) {
+        queries = new URLSearchParams(cleanFilters).toString();
+      }
+
+      const res = await axios.get(`${BASE_URL}/feed?limit=10${queries ? "&" + queries : ""}`, {
         withCredentials: true,
       });
 
@@ -36,8 +67,21 @@ function Feed() {
   };
 
   useEffect(() => {
-    getFeed();
-  }, [dispatch]);
+    const params = new URLSearchParams(location.search);
+    const paramsInArray = params.entries();
+    const obj = Object.fromEntries(paramsInArray);
+
+    // using setTimeout, bypasses the synchronous setting of setstate functions, otherwise they may cause some issues
+    const timer = setTimeout(() => {
+      if (Object.keys(obj).length > 0) {
+        setFilters(obj);
+        getFeed(obj);
+      } else {
+        getFeed();
+      }
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [dispatch, location.search]);
 
   const retry = () => {
     setError(false);
@@ -47,13 +91,18 @@ function Feed() {
 
   useEffect(() => {
     if (feed && feed.length === 0 && !noMoreFeed) {
-      setLoading(true);
-      getFeed();
+      const timer = setTimeout(() => {
+        setLoading(true);
+        getFeed();
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [feed, noMoreFeed]);
 
   return (
     <div className="relative px-4 pt-10 mt-4">
+      <FeedFilters filters={filters} setFilters={setFilters} />
+
       {loading ? (
         <UserCardSkeleton />
       ) : error ? (
