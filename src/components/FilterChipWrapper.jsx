@@ -83,21 +83,21 @@ export default function FilterChipWrapper({
           className={`absolute top-full left-0 mt-2 ${dropdownWidth} rounded-2xl border border-border bg-surface shadow-2xl z-50 overflow-hidden animate-fade-in flex flex-col`}
         >
           {/* Main content area (e.g. checkboxes, search box, sliders) */}
-          <div className="p-2 max-h-80 overflow-y-auto space-y-2">{children}</div>
+          <div className="max-h-80 overflow-y-auto space-y-2">{children}</div>
 
           {/* Footer with Reset and Apply buttons */}
-          <div className="px-3 py-2 bg-surface-2/60 border-t border-border flex items-center justify-end gap-3">
+          <div className="px-2 py-1.5 bg-surface-2/60 border-t border-border flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={onReset}
-              className="btn-ghost text-xs px-4 py-1 rounded-xl border border-border/60 hover:bg-surface transition-colors cursor-pointer"
+              className="btn-ghost h-9 text-xs px-4 py-1 rounded-xl border border-border/60 hover:bg-surface transition-colors cursor-pointer"
             >
               Reset
             </button>
             <button
               type="button"
               onClick={onApply}
-              className="btn-primary text-xs px-4 py-1 rounded-xl shadow-sm cursor-pointer font-medium"
+              className="btn-primary h-9 text-xs px-4 py-1 rounded-xl shadow-sm cursor-pointer font-medium"
             >
               Apply
             </button>

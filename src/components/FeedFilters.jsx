@@ -1,37 +1,85 @@
 import { useState, useEffect } from "react";
 import FilterChipWrapper from "./FilterChipWrapper";
-import { SPECIALIZATION_OPTIONS } from "../utils/filterOptions";
+import MultiSelectFilterContent from "./MultiSelectFilterContent";
+import { SPECIALIZATION_OPTIONS, SKILL_OPTIONS } from "../utils/filterOptions";
 
 export default function FeedFilters({ filters, setFilters }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  // Draft state for specialization (only applied on clicking "Apply")
-  const [draftSpecialization, setDraftSpecialization] = useState(filters.specialization || "");
+  // Helper to parse comma-separated string into array
+  const parseToArray = (str) =>
+    str
+      ? str
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean)
+      : [];
 
-  // Sync draft state when dropdown opens or when applied filters change externally
+  // Draft states for multi-select arrays
+  const [draftSpecializations, setDraftSpecializations] = useState(() =>
+    parseToArray(filters.specialization)
+  );
+  const [draftSkills, setDraftSkills] = useState(() => parseToArray(filters.skills));
+
+  // Sync draft states when dropdowns open
   useEffect(() => {
     if (activeDropdown === "specialization") {
       const timer = setTimeout(() => {
-        setDraftSpecialization(filters.specialization || "");
+        setDraftSpecializations(parseToArray(filters.specialization));
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [activeDropdown, filters.specialization]);
+    if (activeDropdown === "skills") {
+      const timer = setTimeout(() => {
+        setDraftSkills(parseToArray(filters.skills));
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [activeDropdown, filters.specialization, filters.skills]);
 
   const toggleDropdown = (name) => {
     setActiveDropdown((prev) => (prev === name ? null : name));
   };
 
+  // Specialization handlers
   const handleApplySpecialization = () => {
-    setFilters((prev) => ({ ...prev, specialization: draftSpecialization }));
+    setFilters((prev) => ({
+      ...prev,
+      specialization: draftSpecializations.join(", "),
+    }));
     setActiveDropdown(null);
   };
 
   const handleResetSpecialization = () => {
-    setDraftSpecialization("");
+    setDraftSpecializations([]);
     setFilters((prev) => ({ ...prev, specialization: "" }));
     setActiveDropdown(null);
   };
+
+  // Skills handlers
+  const handleApplySkills = () => {
+    setFilters((prev) => ({
+      ...prev,
+      skills: draftSkills.join(", "),
+    }));
+    setActiveDropdown(null);
+  };
+
+  const handleResetSkills = () => {
+    setDraftSkills([]);
+    setFilters((prev) => ({ ...prev, skills: "" }));
+    setActiveDropdown(null);
+  };
+
+  // Helper for active summary text on chips
+  const getSummary = (strArray) => {
+    if (!strArray || strArray.length === 0) return null;
+    if (strArray.length === 1) return strArray[0];
+    return `${strArray.length} Selected`;
+  };
+
+  const specsArray = parseToArray(filters.specialization);
+  const skillsArray = parseToArray(filters.skills);
 
   return (
     <div className="flex items-center flex-wrap gap-2.5 relative">
@@ -39,47 +87,42 @@ export default function FeedFilters({ filters, setFilters }) {
       <FilterChipWrapper
         name="specialization"
         label="Specialization"
-        isActive={Boolean(filters.specialization)}
-        activeSummary={filters.specialization}
+        isActive={specsArray.length > 0}
+        activeSummary={getSummary(specsArray)}
         isOpen={activeDropdown === "specialization"}
         onToggle={toggleDropdown}
         onClearSingle={() => setFilters((prev) => ({ ...prev, specialization: "" }))}
         onReset={handleResetSpecialization}
         onApply={handleApplySpecialization}
       >
-        {/* Content - Options */}
-        <div className="space-y-1">
-          {SPECIALIZATION_OPTIONS.map((spec) => (
-            <button
-              key={spec}
-              type="button"
-              className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors flex items-center justify-between cursor-pointer ${
-                draftSpecialization === spec
-                  ? "bg-primary/10 text-primary font-semibold"
-                  : "hover:bg-surface-2 text-fg/80"
-              }`}
-              onClick={() => setDraftSpecialization((prev) => (prev === spec ? "" : spec))}
-            >
-              <span>{spec}</span>
-              {draftSpecialization === spec && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-primary"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              )}
-            </button>
-          ))}
-        </div>
+        <MultiSelectFilterContent
+          options={SPECIALIZATION_OPTIONS}
+          selectedValues={draftSpecializations}
+          onChange={setDraftSpecializations}
+          placeholder="Search specializations..."
+          allowCustom={true}
+        />
+      </FilterChipWrapper>
+
+      {/* Skills filter chip */}
+      <FilterChipWrapper
+        name="skills"
+        label="Skills"
+        isActive={skillsArray.length > 0}
+        activeSummary={getSummary(skillsArray)}
+        isOpen={activeDropdown === "skills"}
+        onToggle={toggleDropdown}
+        onClearSingle={() => setFilters((prev) => ({ ...prev, skills: "" }))}
+        onReset={handleResetSkills}
+        onApply={handleApplySkills}
+      >
+        <MultiSelectFilterContent
+          options={SKILL_OPTIONS}
+          selectedValues={draftSkills}
+          onChange={setDraftSkills}
+          placeholder="Search skills (e.g. React, Node)..."
+          allowCustom={true}
+        />
       </FilterChipWrapper>
 
       {/* Fullscreen overlay - click outside to close dropdown */}
