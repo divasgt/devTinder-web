@@ -25,6 +25,7 @@ function Feed() {
     maxExp: "",
     city: "",
     country: "",
+    company: "",
     skills: "",
   });
   // const [filtersApplied, setFiltersApplied] = useState(false);

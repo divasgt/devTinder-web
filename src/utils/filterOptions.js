@@ -48,11 +48,10 @@ export const EXPERIENCE_OPTIONS = [
 ];
 
 export const EMPLOYMENT_STATUS_OPTIONS = [
-  "Employed full-time",
-  "Open to work",
-  "Freelancing / Contract",
-  "Student / Intern",
-  "Founder / Co-founder",
+  { label: "Employed", value: "employed" },
+  { label: "Self-Employed", value: "self-employed" },
+  { label: "Freelancing", value: "freelance" },
+  { label: "Student", value: "student" },
 ];
 
 export const POPULAR_LOCATIONS = [

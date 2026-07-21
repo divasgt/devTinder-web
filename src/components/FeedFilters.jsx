@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import FilterChipWrapper from "./FilterChipWrapper";
 import MultiSelectFilterContent from "./MultiSelectFilterContent";
 import RangeFilterContent from "./RangeFilterContent";
-import { SPECIALIZATION_OPTIONS, SKILL_OPTIONS, EXPERIENCE_OPTIONS } from "../utils/filterOptions";
+import LocationFilterContent from "./LocationFilterContent";
+import {
+  SPECIALIZATION_OPTIONS,
+  SKILL_OPTIONS,
+  EXPERIENCE_OPTIONS,
+  POPULAR_LOCATIONS,
+  EMPLOYMENT_STATUS_OPTIONS,
+} from "../utils/filterOptions";
 
 export default function FeedFilters({ filters, setFilters }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -21,12 +28,18 @@ export default function FeedFilters({ filters, setFilters }) {
     parseToArray(filters.specialization)
   );
   const [draftSkills, setDraftSkills] = useState(() => parseToArray(filters.skills));
+  // Draft state for company multi-select
+  const [draftCompany, setDraftCompany] = useState(() => parseToArray(filters.company));
 
   // Draft states for ranges
   const [draftMinExp, setDraftMinExp] = useState(filters.minExp || "");
   const [draftMaxExp, setDraftMaxExp] = useState(filters.maxExp || "");
   const [draftMinAge, setDraftMinAge] = useState(filters.minAge || "");
   const [draftMaxAge, setDraftMaxAge] = useState(filters.maxAge || "");
+
+  // Draft states for location
+  const [draftCity, setDraftCity] = useState(filters.city || "");
+  const [draftCountry, setDraftCountry] = useState(filters.country || "");
 
   // Sync draft states when dropdowns open
   useEffect(() => {
@@ -56,6 +69,19 @@ export default function FeedFilters({ filters, setFilters }) {
       }, 0);
       return () => clearTimeout(timer);
     }
+    if (activeDropdown === "location") {
+      const timer = setTimeout(() => {
+        setDraftCity(filters.city || "");
+        setDraftCountry(filters.country || "");
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+    if (activeDropdown === "company") {
+      const timer = setTimeout(() => {
+        setDraftCompany(parseToArray(filters.company));
+      }, 0);
+      return () => clearTimeout(timer);
+    }
   }, [
     activeDropdown,
     filters.specialization,
@@ -64,18 +90,19 @@ export default function FeedFilters({ filters, setFilters }) {
     filters.maxExp,
     filters.minAge,
     filters.maxAge,
+    filters.city,
+    filters.country,
+    filters.company,
   ]);
 
   const toggleDropdown = (name) => {
     setActiveDropdown((prev) => (prev === name ? null : name));
   };
 
-  // Specialization handlers
+  // Handlers
+
   const handleApplySpecialization = () => {
-    setFilters((prev) => ({
-      ...prev,
-      specialization: draftSpecializations.join(", "),
-    }));
+    setFilters((prev) => ({ ...prev, specialization: draftSpecializations.join(", ") }));
     setActiveDropdown(null);
   };
   const handleResetSpecialization = () => {
@@ -84,12 +111,8 @@ export default function FeedFilters({ filters, setFilters }) {
     setActiveDropdown(null);
   };
 
-  // Skills handlers
   const handleApplySkills = () => {
-    setFilters((prev) => ({
-      ...prev,
-      skills: draftSkills.join(", "),
-    }));
+    setFilters((prev) => ({ ...prev, skills: draftSkills.join(", ") }));
     setActiveDropdown(null);
   };
   const handleResetSkills = () => {
@@ -98,13 +121,8 @@ export default function FeedFilters({ filters, setFilters }) {
     setActiveDropdown(null);
   };
 
-  // Experience handlers
   const handleApplyExperience = () => {
-    setFilters((prev) => ({
-      ...prev,
-      minExp: draftMinExp,
-      maxExp: draftMaxExp,
-    }));
+    setFilters((prev) => ({ ...prev, minExp: draftMinExp, maxExp: draftMaxExp }));
     setActiveDropdown(null);
   };
   const handleResetExperience = () => {
@@ -114,13 +132,8 @@ export default function FeedFilters({ filters, setFilters }) {
     setActiveDropdown(null);
   };
 
-  // Age handlers
   const handleApplyAge = () => {
-    setFilters((prev) => ({
-      ...prev,
-      minAge: draftMinAge,
-      maxAge: draftMaxAge,
-    }));
+    setFilters((prev) => ({ ...prev, minAge: draftMinAge, maxAge: draftMaxAge }));
     setActiveDropdown(null);
   };
   const handleResetAge = () => {
@@ -130,14 +143,34 @@ export default function FeedFilters({ filters, setFilters }) {
     setActiveDropdown(null);
   };
 
-  // Helper for active summary text on array chips
+  const handleApplyLocation = () => {
+    setFilters((prev) => ({ ...prev, city: draftCity, country: draftCountry }));
+    setActiveDropdown(null);
+  };
+  const handleResetLocation = () => {
+    setDraftCity("");
+    setDraftCountry("");
+    setFilters((prev) => ({ ...prev, city: "", country: "" }));
+    setActiveDropdown(null);
+  };
+
+  const handleApplyCompany = () => {
+    setFilters((prev) => ({ ...prev, company: draftCompany.join(", ") }));
+    setActiveDropdown(null);
+  };
+  const handleResetCompany = () => {
+    setDraftCompany([]);
+    setFilters((prev) => ({ ...prev, company: "" }));
+    setActiveDropdown(null);
+  };
+
+  // Summary Helpers
   const getArraySummary = (strArray) => {
     if (!strArray || strArray.length === 0) return null;
     if (strArray.length === 1) return strArray[0];
     return `${strArray.length} Selected`;
   };
 
-  // Helper for active summary text on range chips
   const getRangeSummary = (min, max, unit = "") => {
     if (min !== "" && max !== "") return `${min} - ${max} ${unit}`;
     if (min !== "") return `${min}+ ${unit}`;
@@ -145,8 +178,16 @@ export default function FeedFilters({ filters, setFilters }) {
     return null;
   };
 
+  const getLocationSummary = (city, country) => {
+    if (city && country) return `${city}, ${country}`;
+    if (city) return city;
+    if (country) return country;
+    return null;
+  };
+
   const specsArray = parseToArray(filters.specialization);
   const skillsArray = parseToArray(filters.skills);
+  const companyArray = parseToArray(filters.company);
 
   return (
     <div className="flex items-center flex-wrap gap-2.5 relative">
@@ -196,6 +237,28 @@ export default function FeedFilters({ filters, setFilters }) {
         />
       </FilterChipWrapper>
 
+      {/* Employment Status / Company chip */}
+      <FilterChipWrapper
+        name="company"
+        label="Status"
+        isActive={companyArray.length > 0}
+        activeSummary={getArraySummary(companyArray)}
+        isOpen={activeDropdown === "company"}
+        onToggle={toggleDropdown}
+        onClearSingle={() => setFilters((prev) => ({ ...prev, company: "" }))}
+        onReset={handleResetCompany}
+        onApply={handleApplyCompany}
+        dropdownWidth="w-56"
+      >
+        <MultiSelectFilterContent
+          options={EMPLOYMENT_STATUS_OPTIONS}
+          selectedValues={draftCompany}
+          onChange={setDraftCompany}
+          placeholder="Search status..."
+          allowCustom={false}
+        />
+      </FilterChipWrapper>
+
       {/* Skills filter chip */}
       <FilterChipWrapper
         name="skills"
@@ -214,6 +277,28 @@ export default function FeedFilters({ filters, setFilters }) {
           onChange={setDraftSkills}
           placeholder="Search skills (e.g. React, Node)..."
           allowCustom={true}
+        />
+      </FilterChipWrapper>
+
+      {/* Location filter chip */}
+      <FilterChipWrapper
+        name="location"
+        label="Location"
+        isActive={Boolean(filters.city || filters.country)}
+        activeSummary={getLocationSummary(filters.city, filters.country)}
+        isOpen={activeDropdown === "location"}
+        onToggle={toggleDropdown}
+        onClearSingle={() => setFilters((prev) => ({ ...prev, city: "", country: "" }))}
+        onReset={handleResetLocation}
+        onApply={handleApplyLocation}
+        dropdownWidth="w-72"
+      >
+        <LocationFilterContent
+          cityValue={draftCity}
+          countryValue={draftCountry}
+          onCityChange={setDraftCity}
+          onCountryChange={setDraftCountry}
+          presets={POPULAR_LOCATIONS}
         />
       </FilterChipWrapper>
 

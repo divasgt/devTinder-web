@@ -20,24 +20,29 @@ export default function MultiSelectFilterContent({
     }
   };
 
+  const getLabel = (opt) => (typeof opt === "string" ? opt : opt.label);
+  const getValue = (opt) => (typeof opt === "string" ? opt : opt.value);
+
   // Filter existing options based on search query
   const trimmedQuery = searchQuery.trim();
   const filteredOptions = options.filter((opt) =>
-    opt.toLowerCase().includes(trimmedQuery.toLowerCase())
+    getLabel(opt).toLowerCase().includes(trimmedQuery.toLowerCase())
   );
 
   // Check if custom option row should be shown
   const exactMatchExists =
-    options.some((opt) => opt.toLowerCase() === trimmedQuery.toLowerCase()) ||
+    options.some((opt) => getLabel(opt).toLowerCase() === trimmedQuery.toLowerCase()) ||
     selectedValues.some((val) => val.toLowerCase() === trimmedQuery.toLowerCase());
 
   const showCustomOption = allowCustom && trimmedQuery.length > 0 && !exactMatchExists;
 
   // Ensure any selected custom items that aren't in the base `options` array are also displayed at the top
-  const customSelectedItems = selectedValues.filter((val) => !options.includes(val));
+  const customSelectedItems = selectedValues.filter(
+    (val) => !options.some((opt) => getValue(opt) === val)
+  );
 
   return (
-    <div className="flex flex-col space-y-1">
+    <div className="flex flex-col space-y-1 pb-1">
       {/* Search Input Bar */}
       <div className="relative">
         <svg
@@ -104,19 +109,21 @@ export default function MultiSelectFilterContent({
 
         {/* Render filtered standard options */}
         {filteredOptions.map((opt) => {
-          const isSelected = selectedValues.includes(opt);
+          const val = getValue(opt);
+          const lbl = getLabel(opt);
+          const isSelected = selectedValues.includes(val);
           return (
             <button
-              key={opt}
+              key={val}
               type="button"
-              onClick={() => handleToggle(opt)}
+              onClick={() => handleToggle(val)}
               className={`w-full text-left px-2.5 py-2 rounded-lg text-xs transition-colors flex items-center justify-between cursor-pointer ${
                 isSelected
                   ? "bg-primary/10 text-primary font-semibold"
                   : "hover:bg-surface-2 text-fg/80"
               }`}
             >
-              <span className="truncate pr-2">{opt}</span>
+              <span className="truncate pr-2">{lbl}</span>
               <div
                 className={`w-4 h-4 rounded shrink-0 flex items-center justify-center border transition-colors ${
                   isSelected
