@@ -25,6 +25,7 @@ function UserCard({
     photoUrl,
     specialization,
     experience,
+    status,
     company,
     city,
     country,
@@ -116,10 +117,14 @@ function UserCard({
                 </span>
               </div>
             )}
-            {company && (
+            {(status || company) && (
               <div className="flex items-center gap-1.5">
                 <span>🏢</span>
-                <span className="capitalize">{company}</span>
+                <span className="capitalize">
+                  {status && <span>{status}</span>}
+                  {status && company && ", "}
+                  {company && <span>{company}</span>}
+                </span>
               </div>
             )}
             {(age != 0 || gender) && (

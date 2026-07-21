@@ -18,6 +18,7 @@ function UserProfileSidebar({
     specialization,
     experience,
     company,
+    status: userStatus,
     city,
     country,
     gender,
@@ -291,11 +292,15 @@ function UserProfileSidebar({
               </div>
             )}
 
-            {/* Company */}
-            {company && (
+            {/* Company / Status */}
+            {(userStatus || company) && (
               <div className="flex items-center gap-2">
                 <span>🏢</span>
-                <span className="capitalize">{company}</span>
+                <span className="capitalize">
+                  {userStatus && <span>{userStatus}</span>}
+                  {userStatus && company && ", "}
+                  {company && <span>{company}</span>}
+                </span>
               </div>
             )}
 

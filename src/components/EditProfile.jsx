@@ -19,26 +19,21 @@ function EditProfile() {
   const [gender, setGender] = useState(user?.gender || "");
   const [about, setAbout] = useState(user?.about || "");
   const [skillsRaw, setSkillsRaw] = useState((user?.skills || []).join(", "));
-  const [specialization, setSpecialization] = useState(
-    user?.specialization || "",
-  );
+  const [specialization, setSpecialization] = useState(user?.specialization || "");
   const [experience, setExperience] = useState(user?.experience ?? "");
   const [city, setCity] = useState(user?.city || "");
   const [country, setCountry] = useState(user?.country || "");
   const [lookingFor, setLookingFor] = useState(user?.lookingFor || "");
   const [socialLinks, setSocialLinks] = useState(user?.socialLinks || []);
   const [company, setCompany] = useState(user?.company || "");
+  const [status, setStatus] = useState(user?.status || "");
   const [contactEmail, setContactEmail] = useState(user?.contactEmail || "");
   const [message, setMessage] = useState("");
   const [messageKind, setMessageKind] = useState("idle"); // "success" | "error" | "idle"
   const [busy, setBusy] = useState(false);
 
   if (!user) {
-    return (
-      <p className="mt-10 text-sm text-center text-fg-muted">
-        Loading profile…
-      </p>
-    );
+    return <p className="mt-10 text-sm text-center text-fg-muted">Loading profile…</p>;
   }
 
   const skills = skillsRaw
@@ -61,6 +56,7 @@ function EditProfile() {
     lookingFor,
     socialLinks,
     company,
+    status,
     contactEmail,
   };
 
@@ -81,6 +77,7 @@ function EditProfile() {
         lookingFor,
         socialLinks,
         company,
+        status,
         contactEmail,
         gender: gender,
         age: age === "" ? "" : Number(age),
@@ -208,18 +205,39 @@ function EditProfile() {
           </div>
         </div>
 
-        <div>
-          <label className="label" htmlFor="company">
-            Company
-          </label>
-          <input
-            id="company"
-            type="text"
-            className="input"
-            placeholder="e.g. Google, Freelance, Student"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-          />
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="label" htmlFor="status">
+              Status
+            </label>
+            <select
+              id="status"
+              className="input appearance-none bg-surface capitalize"
+              value={status || ""}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="">Not selected</option>
+              <option value="employed">Employed</option>
+              <option value="self-employed">Self-Employed</option>
+              <option value="freelance">Freelance</option>
+              <option value="student">Student</option>
+              <option value="hobbyist">Hobbyist</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="label" htmlFor="company">
+              Company / Org
+            </label>
+            <input
+              id="company"
+              type="text"
+              className="input"
+              placeholder="e.g. Google, Stanford"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -288,8 +306,7 @@ function EditProfile() {
 
         <div>
           <label className="label" htmlFor="skills">
-            Skills{" "}
-            <span className="text-fg-muted font-normal">(comma separated)</span>
+            Skills <span className="text-fg-muted font-normal">(comma separated)</span>
           </label>
           <input
             id="skills"
@@ -360,18 +377,14 @@ function EditProfile() {
                   className="input flex-1"
                   placeholder="Title (e.g. GitHub)"
                   value={link.title}
-                  onChange={(e) =>
-                    updateSocialLink(index, "title", e.target.value)
-                  }
+                  onChange={(e) => updateSocialLink(index, "title", e.target.value)}
                 />
                 <input
                   type="url"
                   className="input flex-1"
                   placeholder="https://..."
                   value={link.url}
-                  onChange={(e) =>
-                    updateSocialLink(index, "url", e.target.value)
-                  }
+                  onChange={(e) => updateSocialLink(index, "url", e.target.value)}
                 />
                 <button
                   type="button"
@@ -390,12 +403,7 @@ function EditProfile() {
               onClick={addSocialLink}
               className="mt-2 flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -422,9 +430,7 @@ function EditProfile() {
 
       <div className="lg:sticky lg:top-20">
         <div className="w-full max-w-86 mx-auto">
-          <h2 className="text-xl font-bold text-fg tracking-tight mb-1">
-            Live Preview
-          </h2>
+          <h2 className="text-xl font-bold text-fg tracking-tight mb-1">Live Preview</h2>
           <p className="text-sm text-fg-muted mb-4">
             How your profile will appear to others in the feed.
           </p>

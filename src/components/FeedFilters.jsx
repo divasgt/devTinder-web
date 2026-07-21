@@ -28,8 +28,8 @@ export default function FeedFilters({ filters, setFilters }) {
     parseToArray(filters.specialization)
   );
   const [draftSkills, setDraftSkills] = useState(() => parseToArray(filters.skills));
-  // Draft state for company multi-select
-  const [draftCompany, setDraftCompany] = useState(() => parseToArray(filters.company));
+  // Draft state for status multi-select
+  const [draftStatus, setDraftStatus] = useState(() => parseToArray(filters.status));
 
   // Draft states for ranges
   const [draftMinExp, setDraftMinExp] = useState(filters.minExp || "");
@@ -76,9 +76,9 @@ export default function FeedFilters({ filters, setFilters }) {
       }, 0);
       return () => clearTimeout(timer);
     }
-    if (activeDropdown === "company") {
+    if (activeDropdown === "status") {
       const timer = setTimeout(() => {
-        setDraftCompany(parseToArray(filters.company));
+        setDraftStatus(parseToArray(filters.status));
       }, 0);
       return () => clearTimeout(timer);
     }
@@ -92,7 +92,7 @@ export default function FeedFilters({ filters, setFilters }) {
     filters.maxAge,
     filters.city,
     filters.country,
-    filters.company,
+    filters.status,
   ]);
 
   const toggleDropdown = (name) => {
@@ -154,13 +154,13 @@ export default function FeedFilters({ filters, setFilters }) {
     setActiveDropdown(null);
   };
 
-  const handleApplyCompany = () => {
-    setFilters((prev) => ({ ...prev, company: draftCompany.join(", ") }));
+  const handleApplyStatus = () => {
+    setFilters((prev) => ({ ...prev, status: draftStatus.join(", ") }));
     setActiveDropdown(null);
   };
-  const handleResetCompany = () => {
-    setDraftCompany([]);
-    setFilters((prev) => ({ ...prev, company: "" }));
+  const handleResetStatus = () => {
+    setDraftStatus([]);
+    setFilters((prev) => ({ ...prev, status: "" }));
     setActiveDropdown(null);
   };
 
@@ -187,7 +187,7 @@ export default function FeedFilters({ filters, setFilters }) {
 
   const specsArray = parseToArray(filters.specialization);
   const skillsArray = parseToArray(filters.skills);
-  const companyArray = parseToArray(filters.company);
+  const statusArray = parseToArray(filters.status);
 
   return (
     <div className="flex items-center flex-wrap gap-2.5 relative">
@@ -237,23 +237,23 @@ export default function FeedFilters({ filters, setFilters }) {
         />
       </FilterChipWrapper>
 
-      {/* Employment Status / Company chip */}
+      {/* Employment Status chip */}
       <FilterChipWrapper
-        name="company"
+        name="status"
         label="Status"
-        isActive={companyArray.length > 0}
-        activeSummary={getArraySummary(companyArray)}
-        isOpen={activeDropdown === "company"}
+        isActive={statusArray.length > 0}
+        activeSummary={getArraySummary(statusArray)}
+        isOpen={activeDropdown === "status"}
         onToggle={toggleDropdown}
-        onClearSingle={() => setFilters((prev) => ({ ...prev, company: "" }))}
-        onReset={handleResetCompany}
-        onApply={handleApplyCompany}
+        onClearSingle={() => setFilters((prev) => ({ ...prev, status: "" }))}
+        onReset={handleResetStatus}
+        onApply={handleApplyStatus}
         dropdownWidth="w-56"
       >
         <MultiSelectFilterContent
           options={EMPLOYMENT_STATUS_OPTIONS}
-          selectedValues={draftCompany}
-          onChange={setDraftCompany}
+          selectedValues={draftStatus}
+          onChange={setDraftStatus}
           placeholder="Search status..."
           allowCustom={false}
         />
