@@ -9,12 +9,7 @@ import { Link } from "react-router";
   When 'showActions' is true and the user has an '_id', show Ignore and Connect buttons.
 */
 
-function UserCard({
-  user,
-  showActions = true,
-  className = "",
-  animate = true,
-}) {
+function UserCard({ user, showActions = true, className = "", animate = true }) {
   const {
     _id,
     firstName,
@@ -37,11 +32,7 @@ function UserCard({
 
   const handleSendRequest = async (status) => {
     try {
-      await axios.post(
-        `${BASE_URL}/request/send/${status}/${_id}`,
-        {},
-        { withCredentials: true },
-      );
+      await axios.post(`${BASE_URL}/request/send/${status}/${_id}`, {}, { withCredentials: true });
       dispatch(removeUserFromFeed(_id));
     } catch (err) {
       console.error(err.message);
@@ -49,9 +40,7 @@ function UserCard({
   };
 
   return (
-    <div
-      className={`w-full max-w-86 mx-auto ${animate ? "animate-fade-in" : ""} ${className}`}
-    >
+    <div className={`w-full max-w-86 mx-auto ${animate ? "animate-fade-in" : ""} ${className}`}>
       <div className="card relative p-0 overflow-hidden aspect-[3/4] shadow-xl">
         {/* photo area — background */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-rose-500/30 dark:from-indigo-500/20 dark:via-purple-500/20 dark:to-rose-500/20">
@@ -64,9 +53,7 @@ function UserCard({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="font-bold text-7xl text-white/80 select-none">
-                {initial}
-              </span>
+              <span className="font-bold text-7xl text-white/80 select-none">{initial}</span>
             </div>
           )}
         </div>
@@ -111,9 +98,7 @@ function UserCard({
                 <span>
                   <span className="capitalize">{specialization}</span>
                   {experience !== "" && experience != null && ", "}
-                  {experience !== "" && experience != null && (
-                    <span>{experience} y.o.exp.</span>
-                  )}
+                  {experience !== "" && experience != null && <span>{experience} y.exp.</span>}
                 </span>
               </div>
             )}
@@ -151,11 +136,12 @@ function UserCard({
 
           {skills && skills.length > 0 && (
             <div className="flex flex-wrap gap-1.5 pt-1">
-              {skills.map((s, i) => (
+              {skills.slice(0, 6).map((s, i) => (
                 <span key={`${s}-${i}`} className="skill">
                   {s}
                 </span>
               ))}
+              {skills.length > 6 && <span className="skill">+{skills.length - 6}</span>}
             </div>
           )}
         </div>
