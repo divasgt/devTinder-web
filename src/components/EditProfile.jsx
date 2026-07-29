@@ -5,6 +5,7 @@ import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import UserCard from "./UserCard";
 import { useSearchParams } from "react-router";
+import { SPECIALIZATION_OPTIONS, EMPLOYMENT_STATUS_OPTIONS, SKILL_OPTIONS } from "../utils/filterOptions";
 
 function EditProfile() {
   const [searchParams] = useSearchParams();
@@ -18,7 +19,8 @@ function EditProfile() {
   const [age, setAge] = useState(user?.age ?? "");
   const [gender, setGender] = useState(user?.gender || "");
   const [about, setAbout] = useState(user?.about || "");
-  const [skillsRaw, setSkillsRaw] = useState((user?.skills || []).join(", "));
+  const [skills, setSkills] = useState(user?.skills || []);
+  const [skillInput, setSkillInput] = useState("");
   const [specialization, setSpecialization] = useState(user?.specialization || "");
   const [experience, setExperience] = useState(user?.experience ?? "");
   const [city, setCity] = useState(user?.city || "");
@@ -35,11 +37,6 @@ function EditProfile() {
   if (!user) {
     return <p className="mt-10 text-sm text-center text-fg-muted">Loading profile…</p>;
   }
-
-  const skills = skillsRaw
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
 
   const previewUser = {
     firstName,
@@ -181,11 +178,17 @@ function EditProfile() {
             <input
               id="specialization"
               type="text"
+              list="specialization-options"
               className="input"
-              placeholder="e.g. Full Stack Developer"
+              placeholder="e.g. Fullstack Developer"
               value={specialization}
               onChange={(e) => setSpecialization(e.target.value)}
             />
+            <datalist id="specialization-options">
+              {SPECIALIZATION_OPTIONS.map((opt) => (
+                <option key={opt} value={opt} />
+              ))}
+            </datalist>
           </div>
           <div>
             <label className="label" htmlFor="experience">
@@ -217,11 +220,11 @@ function EditProfile() {
               onChange={(e) => setStatus(e.target.value)}
             >
               <option value="">Not selected</option>
-              <option value="employed">Employed</option>
-              <option value="self-employed">Self-Employed</option>
-              <option value="freelance">Freelance</option>
-              <option value="student">Student</option>
-              <option value="hobbyist">Hobbyist</option>
+              {EMPLOYMENT_STATUS_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -232,11 +235,22 @@ function EditProfile() {
             <input
               id="company"
               type="text"
+              list="popular-companies"
               className="input"
               placeholder="e.g. Google, Stanford"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
             />
+            <datalist id="popular-companies">
+              <option value="Google" />
+              <option value="Microsoft" />
+              <option value="Meta" />
+              <option value="Amazon" />
+              <option value="Netflix" />
+              <option value="Apple" />
+              <option value="OpenAI" />
+              <option value="Freelance" />
+            </datalist>
           </div>
         </div>
 
@@ -283,11 +297,22 @@ function EditProfile() {
             <input
               id="city"
               type="text"
+              list="popular-cities"
               className="input"
               placeholder="Mumbai"
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
+            <datalist id="popular-cities">
+              <option value="Mumbai" />
+              <option value="Bengaluru" />
+              <option value="Delhi / NCR" />
+              <option value="San Francisco" />
+              <option value="New York" />
+              <option value="London" />
+              <option value="Berlin" />
+              <option value="Toronto" />
+            </datalist>
           </div>
           <div>
             <label className="label" htmlFor="country">
@@ -296,35 +321,71 @@ function EditProfile() {
             <input
               id="country"
               type="text"
+              list="popular-countries"
               className="input"
               placeholder="India"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
             />
+            <datalist id="popular-countries">
+              <option value="India" />
+              <option value="USA" />
+              <option value="UK" />
+              <option value="Canada" />
+              <option value="Australia" />
+              <option value="Germany" />
+              <option value="Singapore" />
+            </datalist>
           </div>
         </div>
 
         <div>
           <label className="label" htmlFor="skills">
-            Skills <span className="text-fg-muted font-normal">(comma separated)</span>
+            Skills
           </label>
-          <input
-            id="skills"
-            type="text"
-            className="input"
-            placeholder="React, Go, Kubernetes, …"
-            value={skillsRaw}
-            onChange={(e) => setSkillsRaw(e.target.value)}
-          />
-          {skills.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-2">
-              {skills.map((s, i) => (
-                <span key={`${s}-${i}`} className="skill">
-                  {s}
-                </span>
+          <div className="flex flex-col gap-2">
+            <input
+              id="skills"
+              type="text"
+              list="skill-options"
+              className="input"
+              placeholder="Type a skill and press Enter"
+              value={skillInput}
+              onChange={(e) => setSkillInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === ",") {
+                  e.preventDefault();
+                  const val = skillInput.trim();
+                  if (val && !skills.includes(val)) {
+                    setSkills([...skills, val]);
+                  }
+                  setSkillInput("");
+                }
+              }}
+            />
+            <datalist id="skill-options">
+              {SKILL_OPTIONS.map((opt) => (
+                <option key={opt} value={opt} />
               ))}
-            </div>
-          )}
+            </datalist>
+            {skills.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {skills.map((s, i) => (
+                  <span key={`${s}-${i}`} className="skill flex items-center gap-1.5">
+                    {s}
+                    <button
+                      type="button"
+                      onClick={() => setSkills(skills.filter((_, idx) => idx !== i))}
+                      className="opacity-50 hover:opacity-100 hover:text-rose-500 transition-colors p-0.5 rounded-full"
+                      aria-label={`Remove ${s}`}
+                    >
+                      ✕
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div>
