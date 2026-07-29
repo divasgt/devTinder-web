@@ -5,10 +5,8 @@ import { BASE_URL } from "../utils/constants";
 import { addFeed } from "../utils/feedSlice";
 import UserCard from "./UserCard";
 import { EmptyState, ErrorState, UserCardSkeleton } from "./States";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import FeedFilters from "./FeedFilters";
-
-// building feed filters, show ai search bar primary thing, under it from its start width to end width show filters in a line, like linkedin job search filters are shown. show options in dropdown.
 
 function Feed() {
   const feed = useSelector((store) => store.feed);
@@ -16,7 +14,6 @@ function Feed() {
   const [error, setError] = useState(false);
   const [noMoreFeed, setNoMoreFeed] = useState(false);
   const location = useLocation();
-  // const [localFilters, setLocalFilters] = useState({});
   const [filters, setFilters] = useState({
     minAge: "",
     maxAge: "",
@@ -28,8 +25,8 @@ function Feed() {
     status: "",
     skills: "",
   });
-  // const [filtersApplied, setFiltersApplied] = useState(false);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getFeed = async (currentFilters = filters) => {
@@ -68,6 +65,31 @@ function Feed() {
     }
   };
 
+  const handleUpdateFilters = (newFiltersOrUpdater) => {
+    setFilters((prevFilters) => {
+      const nextFilters =
+        typeof newFiltersOrUpdater === "function"
+          ? newFiltersOrUpdater(prevFilters)
+          : newFiltersOrUpdater;
+
+      const cleanFilters = {};
+      Object.entries(nextFilters).forEach(([key, val]) => {
+        if (val !== "" && val !== null && val !== undefined) {
+          cleanFilters[key] = val;
+        }
+      });
+
+      const queries = new URLSearchParams(cleanFilters).toString();
+
+      // Update the URL asynchronously to prevent setState conflicts
+      setTimeout(() => {
+        navigate(`?${queries}`);
+      }, 0);
+
+      return nextFilters;
+    });
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const paramsInArray = params.entries();
@@ -75,35 +97,53 @@ function Feed() {
 
     // using setTimeout, bypasses the synchronous setting of setstate functions, otherwise they may cause some issues
     const timer = setTimeout(() => {
-      if (Object.keys(obj).length > 0) {
-        setFilters(obj);
-        getFeed(obj);
-      } else {
-        getFeed();
-      }
+      const nextFilters = {
+        minAge: "",
+        maxAge: "",
+        specialization: "",
+        minExp: "",
+        maxExp: "",
+        city: "",
+        country: "",
+        status: "",
+        skills: "",
+        ...obj,
+      };
+
+      setFilters(nextFilters);
+      setNoMoreFeed(false);
+      setLoading(true);
+      getFeed(obj);
     }, 0);
+
     return () => clearTimeout(timer);
-  }, [dispatch, location.search]);
+  }, [location.search]);
 
   const retry = () => {
     setError(false);
     setLoading(true);
-    getFeed();
+    const params = new URLSearchParams(location.search);
+    const paramsInArray = params.entries();
+    const obj = Object.fromEntries(paramsInArray);
+    getFeed(obj);
   };
 
   useEffect(() => {
     if (feed && feed.length === 0 && !noMoreFeed) {
       const timer = setTimeout(() => {
         setLoading(true);
-        getFeed();
+        const params = new URLSearchParams(location.search);
+        const paramsInArray = params.entries();
+        const obj = Object.fromEntries(paramsInArray);
+        getFeed(obj);
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [feed, noMoreFeed]);
+  }, [feed, noMoreFeed, location.search]);
 
   return (
     <div className="relative px-4 pt-10 mt-4">
-      <FeedFilters filters={filters} setFilters={setFilters} />
+      <FeedFilters filters={filters} setFilters={handleUpdateFilters} />
 
       {loading ? (
         <UserCardSkeleton />
