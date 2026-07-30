@@ -297,17 +297,17 @@ export default function FeedFilters({ filters, setFilters }) {
             ))}
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
             {activeCount > 0 && (
               <button
                 type="button"
                 onClick={handleClearAllFilters}
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-fg/50 hover:text-red-500 hover:bg-red-500/10 transition-colors py-1 px-2.5 rounded-lg border border-transparent cursor-pointer"
+                className="inline-flex items-center gap-1 text-xs font-medium text-fg/50 hover:text-red-500 hover:bg-red-500/10 transition-colors py-1 px-2.5 rounded-lg border border-transparent cursor-pointer hover:border-red-500/5"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
+                  width="16"
+                  height="16"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
