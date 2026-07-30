@@ -3,6 +3,7 @@
 export default function FilterChipWrapper({
   name,
   label,
+  icon,
   isActive,
   activeSummary,
   isOpen,
@@ -27,6 +28,7 @@ export default function FilterChipWrapper({
       >
         {isActive ? (
           <>
+            {icon && <span>{icon}</span>}
             <span className="font-semibold">{activeSummary || label}</span>
             {/* Quick Clear 'X' on the chip */}
             <span
@@ -55,6 +57,7 @@ export default function FilterChipWrapper({
           </>
         ) : (
           <>
+            {icon && <span>{icon}</span>}
             <span>{label}</span>
             {/* Subtle Chevron indicator */}
             <svg

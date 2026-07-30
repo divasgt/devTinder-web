@@ -360,6 +360,7 @@ export default function FeedFilters({ filters, setFilters }) {
           <FilterChipWrapper
             name="specialization"
             label="Specialization"
+            icon="💼"
             isActive={specsArray.length > 0}
             activeSummary={getArraySummary(specsArray)}
             isOpen={activeDropdown === "specialization"}
@@ -381,6 +382,7 @@ export default function FeedFilters({ filters, setFilters }) {
           <FilterChipWrapper
             name="experience"
             label="Experience"
+            icon="⭐"
             isActive={Boolean(filters.minExp || filters.maxExp)}
             activeSummary={getRangeSummary(filters.minExp, filters.maxExp, "Yrs")}
             isOpen={activeDropdown === "experience"}
@@ -406,6 +408,7 @@ export default function FeedFilters({ filters, setFilters }) {
           <FilterChipWrapper
             name="status"
             label="Status"
+            icon="🟢"
             isActive={statusArray.length > 0}
             activeSummary={getArraySummary(statusArray)}
             isOpen={activeDropdown === "status"}
@@ -428,6 +431,7 @@ export default function FeedFilters({ filters, setFilters }) {
           <FilterChipWrapper
             name="skills"
             label="Skills"
+            icon="🛠️"
             isActive={skillsArray.length > 0}
             activeSummary={getArraySummary(skillsArray)}
             isOpen={activeDropdown === "skills"}
@@ -449,6 +453,7 @@ export default function FeedFilters({ filters, setFilters }) {
           <FilterChipWrapper
             name="location"
             label="Location"
+            icon="📍"
             isActive={Boolean(filters.city || filters.country)}
             activeSummary={getLocationSummary(filters.city, filters.country)}
             isOpen={activeDropdown === "location"}
@@ -471,6 +476,7 @@ export default function FeedFilters({ filters, setFilters }) {
           <FilterChipWrapper
             name="age"
             label="Age"
+            icon="👤"
             isActive={Boolean(filters.minAge || filters.maxAge)}
             activeSummary={getRangeSummary(filters.minAge, filters.maxAge, "Yrs")}
             isOpen={activeDropdown === "age"}
