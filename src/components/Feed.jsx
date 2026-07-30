@@ -142,6 +142,10 @@ function Feed() {
     }
   }, [feed, noMoreFeed, location.search]);
 
+  const hasActiveFilters = Object.values(filters).some(
+    (val) => val !== "" && val !== null && val !== undefined
+  );
+
   return (
     <div className="px-4 pt-4 pb-8">
       <div className="relative z-50">
@@ -154,8 +158,8 @@ function Feed() {
         <ErrorState onRetry={retry} />
       ) : !feed || feed.length === 0 ? (
         <EmptyState
-          title="No new developers right now"
-          body="Check back soon — new devs join all the time."
+          title={hasActiveFilters ? "No developers match these filters" : "No new developers right now"}
+          body={hasActiveFilters ? "Try adjusting your search criteria." : "Check back soon — new devs join all the time."}
         />
       ) : (
         <div className="relative mt-12">
