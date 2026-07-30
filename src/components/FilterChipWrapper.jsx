@@ -20,7 +20,7 @@ export default function FilterChipWrapper({
       <button
         type="button"
         onClick={() => onToggle(name)}
-        className={`px-4 py-2 rounded-full border text-sm transition-all flex items-center gap-1.5 cursor-pointer select-none shadow-2xs ${
+        className={`px-3 py-1.5 rounded-full border text-xs transition-all flex items-center gap-1 cursor-pointer select-none shadow-2xs ${
           isActive
             ? "bg-primary border-primary text-white shadow-sm"
             : "bg-surface hover:bg-surface-2 border-border text-fg"
