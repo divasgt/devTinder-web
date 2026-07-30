@@ -169,7 +169,7 @@ function UserMenu() {
 
 function NavBar() {
   return (
-    <header className="sticky top-0 z-50 h-14 bg-surface/60 backdrop-blur-xl relative before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-primary/20 before:to-transparent">
+    <header className="sticky top-0 z-60 h-14 bg-surface/60 backdrop-blur-xl relative before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-primary/20 before:to-transparent">
       <div className="max-w-6xl mx-auto h-full px-4 flex items-center justify-between gap-4">
         <Brand />
         {}
