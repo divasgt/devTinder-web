@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL } from "../../utils/constants";
 import UserProfileSidebar from "./UserProfileSidebar";
 import UserProfileAbout from "./UserProfileAbout";
 
@@ -119,12 +119,7 @@ function UserProfile() {
             onClick={() => navigate(-1)}
             className="mt-4 inline-flex items-center text-sm text-primary hover:underline"
           >
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -149,12 +144,7 @@ function UserProfile() {
             onClick={() => navigate(-1)}
             className="mt-4 inline-flex items-center text-sm text-primary hover:underline"
           >
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import Body from "./components/Body";
-import EditProfile from "./components/EditProfile";
-import Login from "./components/Login";
-import Feed from "./components/Feed";
-import Landing from "./components/Landing";
-import NotFound from "./components/NotFound";
-import UserProfile from "./components/UserProfile";
+import Body from "./components/layout/Body";
+import EditProfile from "./components/profile/EditProfile";
+import Login from "./components/pages/Login";
+import Feed from "./components/feed/Feed";
+import Landing from "./components/pages/Landing";
+import NotFound from "./components/pages/NotFound";
+import UserProfile from "./components/profile/UserProfile";
 import { Provider, useSelector } from "react-redux";
 import appStore from "./utils/appStore";
-import Connections from "./components/Connections";
-import Requests from "./components/Requests";
-import IgnoredUsers from "./components/IgnoredUsers";
+import Connections from "./components/pages/Connections";
+import Requests from "./components/pages/Requests";
+import IgnoredUsers from "./components/pages/IgnoredUsers";
 
 function Home() {
   const user = useSelector((s) => s.user);

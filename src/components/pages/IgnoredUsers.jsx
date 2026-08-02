@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addIgnoredUsers } from "../utils/ignoredUsersSlice";
-import Avatar from "./Avatar";
-import { EmptyState, ErrorState, SkeletonList } from "./States";
+import { addIgnoredUsers } from "../../utils/ignoredUsersSlice";
+import Avatar from "../others/Avatar";
+import { EmptyState, ErrorState, SkeletonList } from "../others/States";
 import { Link, useNavigate } from "react-router";
 
 function IgnoredUsers() {
@@ -98,18 +98,13 @@ function IgnoredUsers() {
         <ul className="space-y-3">
           {ignoredUsers.map((c) => (
             <li key={c._id} className="card flex items-center gap-4">
-              <Link
-                to={`/user/${c._id}`}
-                className="flex items-center gap-4 flex-1 min-w-0 group"
-              >
+              <Link to={`/user/${c._id}`} className="flex items-center gap-4 flex-1 min-w-0 group">
                 <Avatar user={c} className="size-12 shrink-0 rounded" />
                 <div className="flex-1 min-w-0">
                   <p className="text-base font-semibold text-fg truncate group-hover:underline">
                     {c.firstName} {c.lastName}
                   </p>
-                  {c.about && (
-                    <p className="text-sm text-fg-muted truncate">{c.about}</p>
-                  )}
+                  {c.about && <p className="text-sm text-fg-muted truncate">{c.about}</p>}
                 </div>
               </Link>
             </li>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
-import { parseToArray } from "../utils/filterHelpers";
+import { BASE_URL } from "../../utils/constants";
+import { parseToArray } from "../../utils/filterHelpers";
 
 export default function FeedAISearch({
   filters,

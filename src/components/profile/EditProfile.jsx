@@ -1,11 +1,15 @@
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL } from "../utils/constants";
-import { addUser } from "../utils/userSlice";
-import UserCard from "./UserCard";
+import { BASE_URL } from "../../utils/constants";
+import { addUser } from "../../utils/userSlice";
+import UserCard from "../others/UserCard";
 import { useSearchParams } from "react-router";
-import { SPECIALIZATION_OPTIONS, EMPLOYMENT_STATUS_OPTIONS, SKILL_OPTIONS } from "../utils/filterOptions";
+import {
+  SPECIALIZATION_OPTIONS,
+  EMPLOYMENT_STATUS_OPTIONS,
+  SKILL_OPTIONS,
+} from "../../utils/filterOptions";
 
 function EditProfile() {
   const [searchParams] = useSearchParams();

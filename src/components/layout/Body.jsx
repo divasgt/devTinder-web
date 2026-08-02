@@ -1,13 +1,13 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import NavBar from "./NavBar";
 import BottomNav from "./BottomNav";
+import Footer from "./Footer";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
-import { addUser } from "../utils/userSlice";
+import { BASE_URL } from "../../utils/constants";
+import { addUser } from "../../utils/userSlice";
 import { useEffect, useState } from "react";
-import { Spinner } from "./States";
-import Footer from "./Footer";
+import { Spinner } from "../others/States";
 
 function Body() {
   const user = useSelector((store) => store.user);

@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL } from "../utils/constants";
-import { addRequests, removeRequest } from "../utils/requestsSlice";
+import { BASE_URL } from "../../utils/constants";
+import { addRequests, removeRequest } from "../../utils/requestsSlice";
 import { Link } from "react-router";
-import Avatar from "./Avatar";
-import { EmptyState, ErrorState, SkeletonList } from "./States";
+import Avatar from "../others/Avatar";
+import { EmptyState, ErrorState, SkeletonList } from "../others/States";
 
 function Requests() {
   const requests = useSelector((store) => store.requests);
@@ -38,7 +38,7 @@ function Requests() {
       await axios.post(
         `${BASE_URL}/request/review/${status}/${requestId}`,
         {},
-        { withCredentials: true },
+        { withCredentials: true }
       );
       dispatch(removeRequest(requestId));
     } catch (err) {
@@ -77,9 +77,7 @@ function Requests() {
             </span>
           )}
         </h1>
-        <p className="text-sm text-fg-muted mt-1">
-          People who want to connect with you.
-        </p>
+        <p className="text-sm text-fg-muted mt-1">People who want to connect with you.</p>
       </header>
 
       {loading ? (
@@ -107,11 +105,7 @@ function Requests() {
                     <p className="text-base font-semibold text-fg truncate group-hover:underline">
                       {user.firstName} {user.lastName}
                     </p>
-                    {user.about && (
-                      <p className="text-sm text-fg-muted truncate">
-                        {user.about}
-                      </p>
-                    )}
+                    {user.about && <p className="text-sm text-fg-muted truncate">{user.about}</p>}
                   </div>
                 </Link>
                 <div className="flex gap-2 shrink-0">

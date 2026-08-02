@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BASE_URL } from "../utils/constants";
-import { addConnections } from "../utils/connectionsSlice";
-import Avatar from "./Avatar";
-import { EmptyState, ErrorState, SkeletonList } from "./States";
+import { BASE_URL } from "../../utils/constants";
+import { addConnections } from "../../utils/connectionsSlice";
+import Avatar from "../others/Avatar";
+import { EmptyState, ErrorState, SkeletonList } from "../others/States";
 import { Link } from "react-router";
 
 function Connections() {
@@ -63,9 +63,7 @@ function Connections() {
               </span>
             )}
           </h1>
-          <p className="text-sm text-fg-muted mt-1">
-            Developers you're connected with.
-          </p>
+          <p className="text-sm text-fg-muted mt-1">Developers you're connected with.</p>
         </div>
 
         <Link
@@ -74,12 +72,7 @@ function Connections() {
         >
           Show ignored users{" "}
           <span className="rotate-90">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill="none"
                 stroke="currentColor"
@@ -106,18 +99,13 @@ function Connections() {
         <ul className="space-y-3">
           {connections.map((c) => (
             <li key={c._id} className="card flex items-center gap-4">
-              <Link
-                to={`/user/${c._id}`}
-                className="flex items-center gap-4 flex-1 min-w-0 group"
-              >
+              <Link to={`/user/${c._id}`} className="flex items-center gap-4 flex-1 min-w-0 group">
                 <Avatar user={c} className="size-12 shrink-0 rounded" />
                 <div className="flex-1 min-w-0">
                   <p className="text-base font-semibold text-fg truncate group-hover:underline">
                     {c.firstName} {c.lastName}
                   </p>
-                  {c.about && (
-                    <p className="text-sm text-fg-muted truncate">{c.about}</p>
-                  )}
+                  {c.about && <p className="text-sm text-fg-muted truncate">{c.about}</p>}
                 </div>
               </Link>
             </li>

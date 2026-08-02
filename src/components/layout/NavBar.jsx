@@ -2,15 +2,15 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router";
-import { BASE_URL } from "../utils/constants";
-import { removeUser } from "../utils/userSlice";
-import Avatar from "./Avatar";
-import ThemeToggle from "./ThemeToggle";
-import { Icon } from "./Icons";
-import { removeConnections } from "../utils/connectionsSlice";
-import { removeRequests } from "../utils/requestsSlice";
-import { removeIgnoredUsers } from "../utils/ignoredUsersSlice";
-import { clearFeed } from "../utils/feedSlice";
+import { BASE_URL } from "../../utils/constants";
+import { removeUser } from "../../utils/userSlice";
+import Avatar from "../others/Avatar";
+import ThemeToggle from "../others/ThemeToggle";
+import { Icon } from "../others/Icons";
+import { removeConnections } from "../../utils/connectionsSlice";
+import { removeRequests } from "../../utils/requestsSlice";
+import { removeIgnoredUsers } from "../../utils/ignoredUsersSlice";
+import { clearFeed } from "../../utils/feedSlice";
 
 function Brand() {
   return (

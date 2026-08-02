@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Icon } from "./Icons";
+import { Icon } from "../others/Icons";
 
 const LINKS = [
   { to: "#", label: "About" },

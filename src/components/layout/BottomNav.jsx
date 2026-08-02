@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 import { useSelector } from "react-redux";
-import { Icon } from "./Icons";
+import { Icon } from "../others/Icons";
 
 function Badge({ count }) {
   if (!count) return null;

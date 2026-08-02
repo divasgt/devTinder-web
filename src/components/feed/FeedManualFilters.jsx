@@ -9,13 +9,13 @@ import {
   EXPERIENCE_OPTIONS,
   POPULAR_LOCATIONS,
   EMPLOYMENT_STATUS_OPTIONS,
-} from "../utils/filterOptions";
+} from "../../utils/filterOptions";
 import {
   parseToArray,
   getArraySummary,
   getRangeSummary,
   getLocationSummary,
-} from "../utils/filterHelpers";
+} from "../../utils/filterHelpers";
 
 export default function FeedManualFilters({ filters, setFilters }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
