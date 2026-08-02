@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/constants";
-import { addFeed, clearFeed } from "../../utils/feedSlice";
+import { addFeed, clearFeed } from "../../store/slices/feedSlice";
 import UserCard from "../others/UserCard";
 import { EmptyState, ErrorState, UserCardSkeleton } from "../others/States";
 import { useLocation, useNavigate } from "react-router";

@@ -2,13 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/constants";
-import { addConnections } from "../../utils/connectionsSlice";
+import { addConnections } from "../../store/slices/connectionsSlice";
 import Avatar from "../others/Avatar";
 import { EmptyState, ErrorState, SkeletonList } from "../others/States";
 import { Link } from "react-router";
 
 function Connections() {
-  const connections = useSelector((store) => store.connections);
+  const connections = (useSelector((store) => store.connections) || []).filter(Boolean);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);

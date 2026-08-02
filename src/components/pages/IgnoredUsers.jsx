@@ -2,13 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addIgnoredUsers } from "../../utils/ignoredUsersSlice";
+import { addIgnoredUsers } from "../../store/slices/ignoredUsersSlice";
 import Avatar from "../others/Avatar";
 import { EmptyState, ErrorState, SkeletonList } from "../others/States";
 import { Link, useNavigate } from "react-router";
 
 function IgnoredUsers() {
-  const ignoredUsers = useSelector((store) => store.ignoredUsers);
+  const ignoredUsers = (useSelector((store) => store.ignoredUsers) || []).filter(Boolean);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);

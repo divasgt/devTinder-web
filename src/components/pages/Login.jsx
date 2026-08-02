@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import { BASE_URL } from "../../utils/constants";
-import { addUser } from "../../utils/userSlice";
+import { addUser } from "../../store/slices/userSlice";
 
 function Login() {
   const [searchParams] = useSearchParams();

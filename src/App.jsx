@@ -7,7 +7,7 @@ import Landing from "./components/pages/Landing";
 import NotFound from "./components/pages/NotFound";
 import UserProfile from "./components/profile/UserProfile";
 import { Provider, useSelector } from "react-redux";
-import appStore from "./utils/appStore";
+import appStore from "./store/appStore";
 import Connections from "./components/pages/Connections";
 import Requests from "./components/pages/Requests";
 import IgnoredUsers from "./components/pages/IgnoredUsers";

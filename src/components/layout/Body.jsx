@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
-import { addUser } from "../../utils/userSlice";
+import { addUser } from "../../store/slices/userSlice";
 import { useEffect, useState } from "react";
 import { Spinner } from "../others/States";
 
