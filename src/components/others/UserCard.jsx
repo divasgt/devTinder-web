@@ -92,16 +92,19 @@ function UserCard({ user, showActions = true, className = "", animate = true }) 
 
           {/* Meta info */}
           <div className="space-y-1.5 text-sm text-white/90 drop-shadow-sm">
-            {specialization && (
+            {/* Specialization + Experience */}
+            {(specialization || experience != null) && (
               <div className="flex items-center gap-1.5">
                 <span>💼</span>
                 <span>
-                  <span className="capitalize">{specialization}</span>
-                  {experience !== "" && experience != null && ", "}
-                  {experience !== "" && experience != null && <span>{experience} y.exp.</span>}
+                  {specialization && <span className="capitalize">{specialization}</span>}
+                  {specialization && experience != null && ", "}
+                  {experience != null && <span>{experience} y.exp.</span>}
                 </span>
               </div>
             )}
+
+            {/* Company / Status */}
             {(status || company) && (
               <div className="flex items-center gap-1.5">
                 <span>🏢</span>
@@ -112,16 +115,20 @@ function UserCard({ user, showActions = true, className = "", animate = true }) 
                 </span>
               </div>
             )}
-            {(age != 0 || gender) && (
+
+            {/* Gender + Age */}
+            {(age != null || gender) && (
               <div className="flex items-center gap-1.5">
                 <span>👤</span>
                 <span>
                   {gender && <span className="capitalize">{gender}</span>}
-                  {gender && age != 0 && ", "}
-                  {age != 0 && <span>{age} y.o.</span>}
+                  {gender && age != null && ", "}
+                  {age != null && <span>{age} y.o.</span>}
                 </span>
               </div>
             )}
+
+            {/* Location */}
             {(city || country) && (
               <div className="flex items-center gap-1.5">
                 <span>📍</span>

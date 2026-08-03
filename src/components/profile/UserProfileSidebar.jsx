@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { BASE_URL } from "../../utils/constants";
 import { Icon } from "../others/Icons";
@@ -26,6 +26,7 @@ function UserProfileSidebar({ user, connectionData = null, currentUserId = null,
   const fullName = `${firstName ?? ""} ${lastName ?? ""}`.trim();
   const initial = (firstName || "?").charAt(0).toUpperCase();
 
+  const [prevConnectionData, setPrevConnectionData] = useState(connectionData);
   const [localConnectionData, setLocalConnectionData] = useState(connectionData);
   const [modalState, setModalState] = useState({
     isOpen: false,
@@ -36,9 +37,11 @@ function UserProfileSidebar({ user, connectionData = null, currentUserId = null,
     onConfirm: () => {},
   });
 
-  useEffect(() => {
+  // Sync local state when the connectionData prop changes
+  if (connectionData !== prevConnectionData) {
+    setPrevConnectionData(connectionData);
     setLocalConnectionData(connectionData);
-  }, [connectionData]);
+  }
 
   // open modal function
   const openModal = (title, message, onConfirm, confirmColor = "btn-primary") => {
@@ -101,7 +104,7 @@ function UserProfileSidebar({ user, connectionData = null, currentUserId = null,
   const isSender = localConnectionData?.senderId === currentUserId;
   const reqId = localConnectionData?._id;
 
-  let actionUI = null;
+  let actionUI;
 
   if (isSelf) {
     actionUI = (
@@ -238,14 +241,14 @@ function UserProfileSidebar({ user, connectionData = null, currentUserId = null,
           {actionUI}
 
           <div className="space-y-3 mt-6 mb-5 text-sm text-fg">
-            {/* Role + Experience */}
+            {/* Specialization + Experience */}
             {(specialization || experience != null) && (
               <div className="flex items-center gap-2">
                 <span>💼</span>
                 <span>
                   {specialization && <span className="capitalize">{specialization}</span>}
                   {specialization && experience != null && ", "}
-                  {experience != null && <span>{experience} y.o.exp.</span>}
+                  {experience != null && <span>{experience} y.exp.</span>}
                 </span>
               </div>
             )}
