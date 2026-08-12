@@ -151,6 +151,14 @@ function UserMenu() {
           >
             Profile
           </Link>
+          <Link
+            to="/profile/edit"
+            role="menuitem"
+            onClick={close}
+            className="block px-3 py-2 text-sm rounded-lg hover:bg-surface-2 transition-colors duration-150"
+          >
+            Edit Profile
+          </Link>
           <button
             type="button"
             role="menuitem"
