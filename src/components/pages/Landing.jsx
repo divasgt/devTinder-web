@@ -41,7 +41,7 @@ function Hero() {
               to="/login?signup=true"
               className="h-12 px-8 inline-flex items-center justify-center bg-primary text-white font-semibold text-base rounded-lg transition-all hover:bg-primary-hover hover:shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:-translate-y-0.5 w-full sm:w-auto"
             >
-              Create Your Profile
+              Create My Profile
             </Link>
             <Link
               to="/login"
@@ -64,22 +64,22 @@ function Hero() {
           <div className="relative bg-surface/80 backdrop-blur-xl border border-border/60 rounded-3xl shadow-2xl p-8 w-full max-w-md rotate-[-2deg] transition-transform hover:rotate-0 hover:scale-105 duration-500">
             {/* Header */}
             <div className="flex items-center gap-5 mb-8">
-              <div className="size-20 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-2xl font-bold shadow-lg shrink-0">
-                JD
+              <div className="size-20 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-2xl font-bold shadow-lg shrink-0">
+                RS
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-fg">Jane Doe</h3>
-                <p className="text-sm text-primary font-medium mt-1">Senior Full-Stack</p>
+                <h3 className="text-2xl font-bold text-fg">Rahul Sharma</h3>
+                <p className="text-sm text-primary font-medium mt-1">Full Stack Developer</p>
               </div>
             </div>
 
             {/* Details */}
             <div className="space-y-3 mb-8">
               <div className="flex items-center gap-3 text-sm text-fg-muted">
-                <Icon name="portfolio" size={18} /> <span>10 y.o. exp.</span>
+                <Icon name="portfolio" size={18} /> <span>8 y.o. exp.</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-fg-muted">
-                <span className="px-0.5">📍</span> <span>San Francisco, CA</span>
+                <span className="px-0.5">📍</span> <span>Bangalore, India</span>
               </div>
             </div>
 
@@ -151,7 +151,7 @@ function PainPoint() {
             <div className="space-y-4">
               <div className="bg-bg rounded-2xl p-4 border border-border">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="size-8 rounded-full bg-blue-500/20 text-blue-500 flex items-center justify-center font-bold text-xs">
+                  <div className="size-8 rounded-md bg-blue-500/20 text-blue-500 flex items-center justify-center font-bold text-xs">
                     D
                   </div>
                   <div className="flex flex-col">
@@ -166,7 +166,7 @@ function PainPoint() {
               </div>
               <div className="bg-bg rounded-2xl p-4 border border-border opacity-70">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="size-8 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center font-bold text-xs">
+                  <div className="size-8 rounded-md bg-green-500/20 text-green-500 flex items-center justify-center font-bold text-xs">
                     R
                   </div>
                   <div className="flex flex-col">
@@ -180,7 +180,7 @@ function PainPoint() {
               </div>
               <div className="bg-bg rounded-2xl p-4 border border-border opacity-50">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="size-8 rounded-full bg-purple-500/20 text-purple-500 flex items-center justify-center font-bold text-xs">
+                  <div className="size-8 rounded-md bg-purple-500/20 text-purple-500 flex items-center justify-center font-bold text-xs">
                     C
                   </div>
                   <div className="flex flex-col">
@@ -208,7 +208,7 @@ function PainPoint() {
 
             <div className="bg-bg rounded-2xl p-5 border border-border flex items-center justify-between mb-5 relative z-10 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-md">
               <div className="flex items-center gap-4">
-                <div className="size-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg shadow-inner shrink-0">
+                <div className="size-12 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg shadow-inner shrink-0">
                   AS
                 </div>
                 <div>
@@ -228,9 +228,9 @@ function PainPoint() {
 
             <div className="bg-bg rounded-2xl p-5 border border-border relative z-10">
               <div className="flex items-start gap-3 mb-4">
-                <div className="size-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xs shrink-0 mt-1">
+                {/* <div className="size-8 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xs shrink-0 mt-1">
                   AS
-                </div>
+                </div> */}
                 <div className="bg-surface-2 border border-border rounded-2xl rounded-tl-sm p-3.5 text-sm text-fg shadow-sm">
                   Hey! I see we both know gen AI. Want to team up for an AI hackathon this weekend?
                 </div>
