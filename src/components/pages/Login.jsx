@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import { BASE_URL } from "../../utils/constants";
@@ -18,7 +18,43 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const code = searchParams.get("code");
+    if (code) {
+      handleGithubLogin(code);
+    }
+  }, [searchParams]);
+
+  const handleGithubLogin = async (code) => {
+    setBusy(true);
+    try {
+      const res = await axios.post(`${BASE_URL}/github`, { code }, { withCredentials: true });
+      dispatch(addUser(res.data));
+      if (res.data.isNewUser) {
+        navigate("/profile/edit?flow=signup");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err?.response?.data || "GitHub login failed!");
+      console.error(err);
+      setBusy(false);
+      navigate("/login", { replace: true });
+    }
+  };
+
+  const initiateGithubLogin = () => {
+    const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID || "MY_GITHUB_CLIENT_ID";
+
+    const authorizationParams = new URLSearchParams({
+      client_id: GITHUB_CLIENT_ID,
+      scope: "user:email",
+    });
+    window.location.href = `https://github.com/login/oauth/authorize?${authorizationParams}`;
+  };
+
   const handleLogin = async () => {
+    setBusy(true);
     try {
       const res = await axios.post(
         `${BASE_URL}/login`,
@@ -36,6 +72,7 @@ function Login() {
   };
 
   const handleSignUp = async () => {
+    setBusy(true);
     try {
       const res = await axios.post(
         `${BASE_URL}/signup`,
@@ -70,7 +107,7 @@ function Login() {
       <form onSubmit={handleSubmit} className="w-90 card p-6 space-y-4 animate-fade-in" noValidate>
         <div>
           <h1 className="text-[22px] font-bold text-fg tracking-tight">
-            {isSignUpForm ? "Sign Up" : "Log In"}
+            {isSignUpForm ? "Sign Up" : "Sign In"}
           </h1>
           <p className="text-sm text-fg-muted mt-1">
             {isSignUpForm
@@ -161,7 +198,7 @@ function Login() {
               : "Signing in…"
             : isSignUpForm
               ? "Sign Up"
-              : "Log In"}
+              : "Sign In"}
         </button>
 
         <button
@@ -169,8 +206,39 @@ function Login() {
           onClick={switchMode}
           className="block w-full text-center text-sm text-primary hover:underline cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded"
         >
-          {isSignUpForm ? "Already have an account? Log In" : "New to DevForge? Sign up"}
+          {isSignUpForm ? "Already have an account? Sign In" : "New to DevForge? Sign up"}
         </button>
+
+        <div className="relative mt-6 mb-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-surface px-2 text-fg-muted">Or</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3 items-center">
+          <button
+            type="button"
+            onClick={initiateGithubLogin}
+            className="btn-ghost w-full flex items-center justify-center gap-2 border border-border"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              strokeWidth="2"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+            Sign In with GitHub
+          </button>
+        </div>
       </form>
     </div>
   );
