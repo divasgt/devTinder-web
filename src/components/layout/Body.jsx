@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate, Link } from "react-router";
 import NavBar from "./NavBar";
 import BottomNav from "./BottomNav";
 import Footer from "./Footer";
@@ -53,8 +53,34 @@ function Body() {
     );
   }
 
+  const isIncompleteProfile = user && (!user.skills || user.skills.length === 0);
+  const showBanner = isIncompleteProfile && location.pathname !== "/profile/edit";
+
   return (
     <>
+      {showBanner && (
+        <div className="bg-primary/10 border-b border-primary/20 px-4 py-2 flex items-center gap-3 z-50 sticky top-0 md:relative">
+          <svg
+            className="w-5 h-5 text-primary shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <Link
+            to="/profile/edit?flow=signup"
+            className="text-xs font-medium text-primary hover:underline whitespace-nowrap"
+          >
+            Your profile is incomplete. Add some skills to help developers find you!
+          </Link>
+        </div>
+      )}
       <div className="pb-16 md:pb-40 min-h-screen">
         {(user || location.pathname !== "/") && <NavBar />}
         <Outlet />
