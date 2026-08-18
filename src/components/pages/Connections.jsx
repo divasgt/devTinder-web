@@ -5,13 +5,14 @@ import { BASE_URL } from "../../utils/constants";
 import { addConnections } from "../../store/slices/connectionsSlice";
 import Avatar from "../others/Avatar";
 import { EmptyState, ErrorState, SkeletonList } from "../others/States";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function Connections() {
   const connections = (useSelector((store) => store.connections) || []).filter(Boolean);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getConnections = async () => {
@@ -107,6 +108,16 @@ function Connections() {
                   </p>
                   {c.about && <p className="text-sm text-fg-muted truncate">{c.about}</p>}
                 </div>
+                <button
+                  className="btn-primary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigate(`/chat/${c._id}`);
+                  }}
+                >
+                  Chat
+                </button>
               </Link>
             </li>
           ))}
