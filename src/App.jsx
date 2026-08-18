@@ -12,6 +12,7 @@ import Connections from "./components/pages/Connections";
 import Requests from "./components/pages/Requests";
 import IgnoredUsers from "./components/pages/IgnoredUsers";
 import Chat from "./components/pages/Chat";
+import Chats from "./components/pages/Chats";
 
 function Home() {
   const user = useSelector((s) => s.user);
@@ -31,6 +32,7 @@ function App() {
             <Route path="/connections" element={<Connections />} />
             <Route path="/connections/ignored" element={<IgnoredUsers />} />
             <Route path="/requests" element={<Requests />} />
+            <Route path="/chats" element={<Chats />} />
             <Route path="/chat/:targetUserId" element={<Chat />} />
             <Route path="*" element={<NotFound />} />
           </Route>

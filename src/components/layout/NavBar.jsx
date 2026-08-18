@@ -29,6 +29,7 @@ function PillNav() {
   const user = useSelector((store) => store.user);
   const connectionsCount = useSelector((s) => s.connections?.length ?? 0);
   const requestsCount = useSelector((s) => s.requests?.length ?? 0);
+  const chatCount = 0;
 
   const items = [
     { to: "/", label: "Feed", icon: "feed", end: true },
@@ -43,6 +44,12 @@ function PillNav() {
       label: "Requests",
       icon: "inbox",
       count: requestsCount,
+    },
+    {
+      to: "/chats",
+      label: "Chats",
+      icon: "chat",
+      count: chatCount,
     },
   ];
 
