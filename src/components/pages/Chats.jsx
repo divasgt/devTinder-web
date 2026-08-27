@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import { BASE_URL } from "../../utils/constants";
 import Avatar from "../others/Avatar";
+import { EmptyState } from "../others/States";
 
 export default function Chats() {
   const [chats, setChats] = useState([]);
@@ -40,15 +41,20 @@ export default function Chats() {
 
   if (!chats || chats.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto mt-6 text-center card py-12">
-        <h2 className="text-xl font-bold mb-2">No conversations yet</h2>
-        <p className="text-fg-muted mb-4">
-          When you connect with someone, your chats will appear here.
-        </p>
-        <Link to="/connections" className="btn-primary inline-block">
-          View Connections
-        </Link>
-      </div>
+      // <div className="max-w-2xl mx-auto mt-6 text-center card py-12">
+      //   <h2 className="text-xl font-bold mb-2">No conversations yet</h2>
+      //   <p className="text-fg-muted mb-4">
+      //     When you connect with someone, your chats will appear here.
+      //   </p>
+      //   <Link to="/connections" className="btn-primary inline-flex">
+      //     View Connections
+      //   </Link>
+      // </div>
+      <EmptyState
+        title="No chats yet"
+        body="When you connect with someone, your chats will appear here."
+        cta={{ to: "/connections", label: "View Connections" }}
+      />
     );
   }
 
