@@ -34,6 +34,7 @@ export default function Chat() {
 
       const chatMessages = chat.map((msg) => ({
         firstName: msg.senderId.firstName,
+        senderId: msg.senderId._id,
         text: msg.text,
         createdAt: msg.createdAt,
       }));
@@ -58,9 +59,9 @@ export default function Chat() {
 
     socket.emit("joinChat", { firstName: loggedInUser.firstName, targetUserId });
 
-    socket.on("messageRecieved", ({ firstName, text }) => {
+    socket.on("messageRecieved", ({ firstName, text, senderId }) => {
       console.log(`${firstName} sent message: ${text}`);
-      setMessages((prev) => [...prev, { firstName, text, createdAt: Date.now() }]);
+      setMessages((prev) => [...prev, { firstName, text, senderId, createdAt: Date.now() }]);
     });
 
     return () => {
@@ -111,7 +112,7 @@ export default function Chat() {
         {/* Chat history */}
         <div ref={chatContainerRef} className="flex-1 space-y-2 overflow-y-auto p-2">
           {messages.map((msg, index) => {
-            const isMe = msg.firstName === loggedInUser?.firstName;
+            const isMe = msg.senderId === userId;
             const time = new Date(msg.createdAt || Date.now()).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
