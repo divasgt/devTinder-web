@@ -70,15 +70,15 @@ function PillNav() {
         >
           <Icon name={item.icon} size={18} />
           <span>{item.label}</span>
-          {/* Item badge */}
-          {item.count > 0 && (
+          {/* Item Count badge */}
+          {/* {item.count > 0 && (
             <span
               className="inline-flex items-center justify-center min-w-4.5 h-4.5 px-1 text-[10px] font-bold rounded-full bg-accent text-white"
               aria-label={`${item.count} pending`}
             >
               {item.count > 9 ? "9+" : item.count}
             </span>
-          )}
+          )} */}
         </NavLink>
       ))}
     </nav>
